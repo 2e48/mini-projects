@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random words xD</title>
+</head>
+
+<body>
+  <div id="word-list"></div>
+</body>
+
+<script>
+  const SORT = {
+    NONE: 0,
+    ASCENDING: 1,
+    DESCENDING: 2,
+  };
+
+  const wordListDiv = document.getElementById('word-list');
+
+  const wordGen = (syllables) => {
+    const consonants = 'bcdfghjklmnpqrstvwxz';
+    const vowels = 'aeiouy'; // making y as a vowel coz it sounds like one
+
+    let generatedWord = '';
+    for (let s = 0; s < syllables; s++) {
+      generatedWord += consonants[Math.random() * consonants.length ^ 0];
+      generatedWord += vowels[Math.random() * vowels.length ^ 0];
+
+      // Math.random() * number ^ 0
+      // powering by zero to remove decimals since
+      // math.random() returns a float value
+      // i dont know why this works, but it works
+    }
+
+    return generatedWord;
+  };
+
+  const showWords = (words, syllableCount, sort = SORT.NONE) => {
+    let wordsArray = [];
+
+    for (let w = 0; w < words; w++) {
+      wordsArray.push(wordGen(syllableCount));
+    }
+
+    if (sort) wordsArray.sort();
+    if (sort > 1) wordsArray.reverse();
+
+    wordsArray.forEach(item => {
+      wordListDiv.innerHTML += item + '<br>'
+    })
+  };
+
+  showWords(20, 3);
+</script>
+
+</html>
