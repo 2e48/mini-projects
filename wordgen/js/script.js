@@ -10,8 +10,8 @@ const vowels = 'aeiouy'; // making y as a vowel because it sounds like one
 
 const SORT = {
   NONE: 'none',
-  ASCENDING: 'ascending',
-  DESCENDING: 'decending',
+  ASC: 'asc',
+  DESC: 'desc',
 };
 
 const MODE = {
@@ -41,10 +41,25 @@ const syllabicWordGen = (syllables) => {
 const naturalWordGen = (length) => {
   let generatedWord = '';
 
-  while (generatedWord.length < length) {
-    const isSingle = randomInt(2);
-    const syllable = consonants[randomInt(consonants.length)]
+  let lastTwoSyllable = ['0','0'];
+  while (generatedWord.length < length) {    
+    const syllableGenerator = () => {
+      return consonants[randomInt(consonants.length)]
       + vowels[randomInt(vowels.length)];
+    }
+    let isSingle = randomInt(2); // 0 or 1
+    let syllable = syllableGenerator();
+    
+    lastTwoSyllable.shift();
+    lastTwoSyllable.push(syllable);
+
+    if (
+      lastTwoSyllable[0][1] === lastTwoSyllable[1][1]
+      && lastTwoSyllable[0][1] === syllable[1]
+    ) {
+      // if the syllable would be repeated 3 times, regenerate
+      syllable = syllableGenerator();
+    }
 
     if ((length - generatedWord.length) > 1) {
       generatedWord += isSingle === 1 ? syllable[1] : syllable;
@@ -65,8 +80,9 @@ const showWords = (words, units, mode, sort = SORT.NONE) => {
     wordsArray.push(MODE[mode](units));
   }
 
-  if (sort === SORT.ASCENDING) { wordsArray.sort(); }
-  else if (sort === SORT.DESCENDING) { wordsArray.reverse(); }
+  // FIXME: descending does not work
+  if (sort === SORT.ASC) { wordsArray.sort(); }
+  if (sort === SORT.DESC) { wordsArray.reverse(); }
 
   wordsArray.forEach(item => {
     wordListDiv.innerHTML += item + '<br>'
