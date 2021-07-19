@@ -9,9 +9,9 @@ const consonants = 'bcdfghjklmnpqrstvwxz';
 const vowels = 'aeiouy'; // making y as a vowel because it sounds like one
 
 const SORT = {
-  NONE: 0,
-  ASCENDING: 1,
-  DESCENDING: 2,
+  NONE: 'none',
+  ASCENDING: 'ascending',
+  DESCENDING: 'decending',
 };
 
 const MODE = {
@@ -65,8 +65,8 @@ const showWords = (words, units, mode, sort = SORT.NONE) => {
     wordsArray.push(MODE[mode](units));
   }
 
-  if (sort == SORT.ASCENDING) { wordsArray.sort(); }
-  else if (sort == SORT.DESCENDING) { wordsArray.reverse(); }
+  if (sort === SORT.ASCENDING) { wordsArray.sort(); }
+  else if (sort === SORT.DESCENDING) { wordsArray.reverse(); }
 
   wordsArray.forEach(item => {
     wordListDiv.innerHTML += item + '<br>'
