@@ -14,17 +14,26 @@ const randomInt = (maxNumber) => {
   return Math.floor(Math.random() * maxNumber);
 };
 
-const wordGen = (syllables) => {
+const syllabicWordGen = (syllables) => {
   const consonants = 'bcdfghjklmnpqrstvwxz';
   const vowels = 'aeiouy'; // making y as a vowel coz it sounds like one
 
   let generatedWord = '';
   for (let s = 0; s < syllables; s++) {
-    generatedWord += consonants[randomInt(consonants.length)];
-    generatedWord += vowels[randomInt(vowels.length)];
+    let isSingle = randomInt(2);
+
+    if (isSingle === 1) {
+      generatedWord += vowels[randomInt(vowels.length)];
+    } else {
+      generatedWord += consonants[randomInt(consonants.length)];
+      generatedWord += vowels[randomInt(vowels.length)];
+    }    
   }
 
   return generatedWord;
+};
+
+const naturalWordGen = (length) => {
 };
 
 const showWords = (words, syllableCount, sort = SORT.NONE) => {
@@ -33,7 +42,7 @@ const showWords = (words, syllableCount, sort = SORT.NONE) => {
   let wordsArray = [];
 
   for (let w = 0; w < words; w++) {
-    wordsArray.push(wordGen(syllableCount));
+    wordsArray.push(syllabicWordGen(syllableCount));
   }
 
   if (sort == SORT.ASCENDING) { wordsArray.sort(); }
