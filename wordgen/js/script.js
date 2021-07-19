@@ -43,7 +43,8 @@ const naturalWordGen = (length) => {
 
   while (generatedWord.length < length) {
     const isSingle = randomInt(2);
-    const syllable = consonants[randomInt(consonants.length)] + vowels[randomInt(vowels.length)];
+    const syllable = consonants[randomInt(consonants.length)]
+      + vowels[randomInt(vowels.length)];
 
     if ((length - generatedWord.length) > 1) {
       generatedWord += isSingle === 1 ? syllable[1] : syllable;
