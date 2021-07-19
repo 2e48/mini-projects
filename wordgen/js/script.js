@@ -1,3 +1,12 @@
+const wordListDiv = document.getElementById('word-list');
+const regenButton = document.getElementById('reroll-words');
+const syllableInput = document.getElementById('syllables');
+const countInput = document.getElementById('count');
+const sortInput = document.getElementById('sort-mode');
+
+const consonants = 'bcdfghjklmnpqrstvwxz';
+const vowels = 'aeiouy'; // making y as a vowel because it sounds like one
+
 const SORT = {
   NONE: 0,
   ASCENDING: 1,
@@ -13,21 +22,13 @@ const MODE = {
   }
 };
 
-const wordListDiv = document.getElementById('word-list');
-const regenButton = document.getElementById('reroll-words');
-const syllableInput = document.getElementById('syllables');
-const countInput = document.getElementById('count');
-const sortInput = document.getElementById('sort-mode');
-
-const consonants = 'bcdfghjklmnpqrstvwxz';
-const vowels = 'aeiouy'; // making y as a vowel coz it sounds like one
-
 const randomInt = (maxNumber) => {
   return Math.floor(Math.random() * maxNumber);
 };
 
 const syllabicWordGen = (syllables) => {
   let generatedWord = '';
+
   for (let s = 0; s < syllables; s++) {
     generatedWord += consonants[randomInt(consonants.length)];
     generatedWord += vowels[randomInt(vowels.length)];
@@ -38,16 +39,18 @@ const syllabicWordGen = (syllables) => {
 
 const naturalWordGen = (length) => {
   let generatedWord = '';
-  for (let s = 0; s < length; s++) {
-    let isSingle = randomInt(2);
 
-    if (isSingle === 1) {
-      generatedWord += vowels[randomInt(vowels.length)];
+  while (generatedWord.length < length) {
+    const isSingle = randomInt(2);
+    const syllable = consonants[randomInt(consonants.length)] + vowels[randomInt(vowels.length)];
+
+    if ((length - generatedWord.length) > 1) {
+      generatedWord += isSingle === 1 ? syllable[1] : syllable;
     } else {
-      generatedWord += consonants[randomInt(consonants.length)];
-      generatedWord += vowels[randomInt(vowels.length)];
+      generatedWord += syllable[1];
     }
   }
+
   return generatedWord;
 };
 
@@ -65,7 +68,7 @@ const showWords = (words, length, sort = SORT.NONE) => {
 
   wordsArray.forEach(item => {
     wordListDiv.innerHTML += item + '<br>'
-  })
+  });
 };
 
 regenButton.addEventListener('click', function () {
