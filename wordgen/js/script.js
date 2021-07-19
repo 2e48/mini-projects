@@ -36,8 +36,8 @@ const showWords = (words, syllableCount, sort = SORT.NONE) => {
     wordsArray.push(wordGen(syllableCount));
   }
 
-  if (sort == SORT.ASCENDING) wordsArray.sort();
-  if (sort == SORT.DESCENDING) wordsArray.reverse();
+  if (sort == SORT.ASCENDING) { wordsArray.sort(); }
+  else if (sort == SORT.DESCENDING) { wordsArray.reverse(); }
 
   wordsArray.forEach(item => {
     wordListDiv.innerHTML += item + '<br>'
