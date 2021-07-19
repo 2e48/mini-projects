@@ -3,6 +3,7 @@ const regenButton = document.getElementById('reroll-words');
 const syllableInput = document.getElementById('syllables');
 const countInput = document.getElementById('count');
 const sortInput = document.getElementById('sort-mode');
+const generatorMode = document.getElementById('generator-mode');
 
 const consonants = 'bcdfghjklmnpqrstvwxz';
 const vowels = 'aeiouy'; // making y as a vowel because it sounds like one
@@ -54,13 +55,13 @@ const naturalWordGen = (length) => {
   return generatedWord;
 };
 
-const showWords = (words, length, sort = SORT.NONE) => {
+const showWords = (words, units, mode, sort = SORT.NONE) => {
   wordListDiv.innerHTML = '';
 
   let wordsArray = [];
 
   for (let w = 0; w < words; w++) {
-    wordsArray.push(naturalWordGen(length));
+    wordsArray.push(MODE[mode](units));
   }
 
   if (sort == SORT.ASCENDING) { wordsArray.sort(); }
@@ -75,6 +76,7 @@ regenButton.addEventListener('click', function () {
   showWords(
     countInput.value,
     syllableInput.value,
+    generatorMode.value,
     sortInput.value
   );
 });
