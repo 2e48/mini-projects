@@ -49,7 +49,7 @@ const naturalWordGen = (length) => {
       if (lastTwo.length === 2) {
         while (lastTwo.every(v => v === randomVowel)) {
           randomVowel = vowels[randomInt(vowels.length)];
-        };
+        }
       }
 
       return consonants[randomInt(consonants.length)] + randomVowel;
