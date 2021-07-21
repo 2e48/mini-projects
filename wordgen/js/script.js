@@ -77,10 +77,10 @@ const showWords = (words, units, mode, sort = SORT.NONE) => {
     wordsArray.push(MODE[mode](units));
   }
 
-  // FIXME: descending does not work
   if (sort === SORT.ASC) {
     wordsArray.sort();
   } else if (sort === SORT.DESC) {
+    wordsArray.sort();
     wordsArray.reverse();
   }
 
