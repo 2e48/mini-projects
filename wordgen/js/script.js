@@ -15,10 +15,10 @@ const SORT = {
 };
 
 const MODE = {
-  syllabic: function(syllables) {
+  syllabic: function (syllables) {
     return syllabicWordGen(syllables);
   },
-  natural: function(length) {
+  natural: function (length) {
     return naturalWordGen(length);
   }
 };
@@ -41,25 +41,22 @@ const syllabicWordGen = (syllables) => {
 const naturalWordGen = (length) => {
   let generatedWord = '';
 
-  let lastTwoSyllable = ['0','0'];
-  while (generatedWord.length < length) {    
-    const syllableGenerator = () => {
-      return consonants[randomInt(consonants.length)]
-      + vowels[randomInt(vowels.length)];
-    }
-    let isSingle = randomInt(2); // 0 or 1
-    let syllable = syllableGenerator();
-    
-    lastTwoSyllable.shift();
-    lastTwoSyllable.push(syllable);
+  while (generatedWord.length < length) {
+    const generateSyllable = () => {
+      let lastTwo = generatedWord.slice(-2).split('');
+      let randomVowel = vowels[randomInt(vowels.length)];
 
-    if (
-      lastTwoSyllable[0][1] === lastTwoSyllable[1][1]
-      && lastTwoSyllable[0][1] === syllable[1]
-    ) {
-      // if the syllable would be repeated 3 times, regenerate
-      syllable = syllableGenerator();
-    }
+      if (lastTwo.length === 2) {
+        while (lastTwo.every(v => v === randomVowel)) {
+          randomVowel = vowels[randomInt(vowels.length)]
+        };
+      }
+
+      return consonants[randomInt(consonants.length)] + randomVowel;
+    };
+
+    let isSingle = randomInt(2); // 0 or 1
+    let syllable = generateSyllable();
 
     if ((length - generatedWord.length) > 1) {
       generatedWord += isSingle === 1 ? syllable[1] : syllable;
@@ -81,8 +78,11 @@ const showWords = (words, units, mode, sort = SORT.NONE) => {
   }
 
   // FIXME: descending does not work
-  if (sort === SORT.ASC) { wordsArray.sort(); }
-  if (sort === SORT.DESC) { wordsArray.reverse(); }
+  if (sort === SORT.ASC) {
+    wordsArray.sort();
+  } else if (sort === SORT.DESC) {
+    wordsArray.reverse();
+  }
 
   wordsArray.forEach(item => {
     wordListDiv.innerHTML += item + '<br>'
