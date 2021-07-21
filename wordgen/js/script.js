@@ -48,7 +48,7 @@ const naturalWordGen = (length) => {
 
       if (lastTwo.length === 2) {
         while (lastTwo.every(v => v === randomVowel)) {
-          randomVowel = vowels[randomInt(vowels.length)]
+          randomVowel = vowels[randomInt(vowels.length)];
         };
       }
 
@@ -85,7 +85,7 @@ const showWords = (words, units, mode, sort = SORT.NONE) => {
   }
 
   wordsArray.forEach(item => {
-    wordListDiv.innerHTML += item + '<br>'
+    wordListDiv.innerHTML += item + '<br>';
   });
 };
 
