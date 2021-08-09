@@ -14,7 +14,7 @@
     div#main-content {
       border: 1px solid black;
       margin: auto;
-      width: 50%;
+      width: 75%;
       padding: var(--global-padding);
     }
 
@@ -25,6 +25,16 @@
       margin: 5px;
       font-family: 'Courier New', Courier, monospace;
       border-radius: 5px;
+      column-count: 5;
+    }
+
+    .generated-word {
+      display: block;
+    }
+
+    .generated-word:hover {
+      color: yellowgreen;
+      font-weight: 700;
     }
   </style>
 </head>
@@ -52,5 +62,23 @@
 </body>
 
 <script src="js/word-gen.js"></script>
+<script>
+  const wordListDiv = document.getElementById('word-list');
+  const regenButton = document.getElementById('reroll-words');
+  const unitInput = document.getElementById('units');
+  const countInput = document.getElementById('count');
+  const sortInput = document.getElementById('sort-mode');
+  const generatorMode = document.getElementById('generator-mode');
+
+  regenButton.addEventListener('click', function () {
+    showWords(
+      countInput.value,
+      unitInput.value,
+      generatorMode.value,
+      wordListDiv,
+      sortInput.value
+    );
+  });
+</script>
 
 </html>
