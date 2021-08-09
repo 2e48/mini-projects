@@ -1,10 +1,3 @@
-const wordListDiv = document.getElementById('word-list');
-const regenButton = document.getElementById('reroll-words');
-const unitInput = document.getElementById('units');
-const countInput = document.getElementById('count');
-const sortInput = document.getElementById('sort-mode');
-const generatorMode = document.getElementById('generator-mode');
-
 const consonants = 'bcdfghjklmnpqrstvwxz';
 const vowels = 'aeiouy'; // making y as a vowel because it sounds like one
 
@@ -38,7 +31,7 @@ const syllabicWordGen = (syllables) => {
   return generatedWord;
 };
 
-const naturalWordGen = (length, vowelChance = 75, dice = randomInt(100)) => {
+const naturalWordGen = (length, vowelChance = 20) => {
   let generatedWord = '';
 
   while (generatedWord.length < length) {
@@ -55,6 +48,7 @@ const naturalWordGen = (length, vowelChance = 75, dice = randomInt(100)) => {
       return consonants[randomInt(consonants.length)] + randomVowel;
     };
 
+    let dice = randomInt(100);
     let syllable = generateSyllable();
 
     if ((length - generatedWord.length) > 1) {
@@ -67,8 +61,8 @@ const naturalWordGen = (length, vowelChance = 75, dice = randomInt(100)) => {
   return generatedWord;
 };
 
-const showWords = (words, units, mode, sort = SORT.NONE) => {
-  wordListDiv.innerHTML = '';
+const showWords = (words, units, mode, wordListElement, sort = SORT.NONE) => {
+  wordListElement.innerHTML = '';
 
   let wordsArray = [];
 
@@ -84,15 +78,6 @@ const showWords = (words, units, mode, sort = SORT.NONE) => {
   }
 
   wordsArray.forEach(item => {
-    wordListDiv.innerHTML += item + '<br>';
+    wordListElement.innerHTML += `<span class="generated-word">${item}</span>`;
   });
 };
-
-regenButton.addEventListener('click', function () {
-  showWords(
-    countInput.value,
-    unitInput.value,
-    generatorMode.value,
-    sortInput.value
-  );
-});
