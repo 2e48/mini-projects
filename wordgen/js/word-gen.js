@@ -38,7 +38,7 @@ const syllabicWordGen = (syllables) => {
   return generatedWord;
 };
 
-const naturalWordGen = (length) => {
+const naturalWordGen = (length, vowelChance = 75, dice = randomInt(100)) => {
   let generatedWord = '';
 
   while (generatedWord.length < length) {
@@ -55,11 +55,10 @@ const naturalWordGen = (length) => {
       return consonants[randomInt(consonants.length)] + randomVowel;
     };
 
-    let dice = randomInt(100);
     let syllable = generateSyllable();
 
     if ((length - generatedWord.length) > 1) {
-      generatedWord += dice > 90 ? syllable[1] : syllable;
+      generatedWord += dice < vowelChance ? syllable[1] : syllable;
     } else {
       generatedWord += syllable[1];
     }
