@@ -1,6 +1,6 @@
 const wordListDiv = document.getElementById('word-list');
 const regenButton = document.getElementById('reroll-words');
-const syllableInput = document.getElementById('syllables');
+const unitInput = document.getElementById('units');
 const countInput = document.getElementById('count');
 const sortInput = document.getElementById('sort-mode');
 const generatorMode = document.getElementById('generator-mode');
@@ -55,11 +55,11 @@ const naturalWordGen = (length) => {
       return consonants[randomInt(consonants.length)] + randomVowel;
     };
 
-    let isSingle = randomInt(2); // 0 or 1
+    let dice = randomInt(100);
     let syllable = generateSyllable();
 
     if ((length - generatedWord.length) > 1) {
-      generatedWord += isSingle === 1 ? syllable[1] : syllable;
+      generatedWord += dice > 90 ? syllable[1] : syllable;
     } else {
       generatedWord += syllable[1];
     }
@@ -92,7 +92,7 @@ const showWords = (words, units, mode, sort = SORT.NONE) => {
 regenButton.addEventListener('click', function () {
   showWords(
     countInput.value,
-    syllableInput.value,
+    unitInput.value,
     generatorMode.value,
     sortInput.value
   );
