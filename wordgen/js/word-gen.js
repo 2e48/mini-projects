@@ -1,83 +1,66 @@
-const consonants = 'bcdfghjklmnpqrstvwxz';
-const vowels = 'aeiouy'; // making y as a vowel because it sounds like one
+class WordGen {
+  #consonants; #vowels;
 
-const SORT = {
-  NONE: 'none',
-  ASC: 'asc',
-  DESC: 'desc',
-};
-
-const MODE = {
-  syllabic: function (syllables) {
-    return syllabicWordGen(syllables);
-  },
-  natural: function (length) {
-    return naturalWordGen(length);
-  }
-};
-
-const randomInt = (maxNumber) => {
-  return Math.floor(Math.random() * maxNumber);
-};
-
-const syllabicWordGen = (syllables) => {
-  let generatedWord = '';
-
-  for (let s = 0; s < syllables; s++) {
-    generatedWord += consonants[randomInt(consonants.length)];
-    generatedWord += vowels[randomInt(vowels.length)];
+  constructor() {
+    this.#consonants = 'bcdfghjklmnpqrstvwxz';
+    this.#vowels = 'aeiouy';
   }
 
-  return generatedWord;
-};
+  setLetters(consonants, vowels) {
+    this.#consonants = consonants;
+    this.#vowels = vowels;
+  }
 
-const naturalWordGen = (length, vowelChance = 20) => {
-  let generatedWord = '';
+  #getRandomInteger(maxNumber) {
+    return Math.floor(Math.random() * maxNumber);
+  }
 
-  while (generatedWord.length < length) {
-    const generateSyllable = () => {
-      let lastTwo = generatedWord.slice(-2).split('');
-      let randomVowel = vowels[randomInt(vowels.length)];
+  #getRandomVowel() {
+    return this.#vowels[this.#getRandomInteger(this.#vowels.length)];
+  }
 
-      if (lastTwo.length === 2) {
-        while (lastTwo.every(v => v === randomVowel)) {
-          randomVowel = vowels[randomInt(vowels.length)];
-        }
-      }
+  #getRandomConsonant() {
+    return this.#consonants[this.#getRandomInteger(this.#consonants.length)]
+  }
 
-      return consonants[randomInt(consonants.length)] + randomVowel;
-    };
+  syllabic(syllables) {
+    let generatedWord = '';
 
-    let dice = randomInt(100);
-    let syllable = generateSyllable();
-
-    if ((length - generatedWord.length) > 1) {
-      generatedWord += dice < vowelChance ? syllable[1] : syllable;
-    } else {
-      generatedWord += syllable[1];
+    for (let s = 0; s < syllables; s++) {
+      generatedWord += this.#getRandomConsonant();
+      generatedWord += this.#getRandomVowel();
     }
+
+    return generatedWord;
   }
 
-  return generatedWord;
-};
+  natural(length, vowelChance = 20) {
+    let generatedWord = '';
 
-const showWords = (words, units, mode, wordListElement, sort = SORT.NONE) => {
-  wordListElement.innerHTML = '';
+    while (generatedWord.length < length) {
+      const generateSyllable = () => {
+        let lastTwo = generatedWord.slice(-2).split('');
+        let randomVowel = this.#getRandomVowel();
 
-  let wordsArray = [];
+        if (lastTwo.length === 2) {
+          while (lastTwo.every(v => v === randomVowel)) {
+            randomVowel = this.#getRandomVowel();
+          }
+        }
 
-  for (let w = 0; w < words; w++) {
-    wordsArray.push(MODE[mode](units));
-  }
+        return this.#getRandomConsonant() + randomVowel;
+      };
 
-  if (sort === SORT.ASC) {
-    wordsArray.sort();
-  } else if (sort === SORT.DESC) {
-    wordsArray.sort();
-    wordsArray.reverse();
-  }
+      let dice = this.#getRandomInteger(100);
+      let syllable = generateSyllable();
 
-  wordsArray.forEach(item => {
-    wordListElement.innerHTML += `<span class="generated-word">${item}</span>`;
-  });
-};
+      if ((length - generatedWord.length) > 1) {
+        generatedWord += dice < vowelChance ? syllable[1] : syllable;
+      } else {
+        generatedWord += syllable[1];
+      }
+    }
+
+    return generatedWord;
+  };
+}
