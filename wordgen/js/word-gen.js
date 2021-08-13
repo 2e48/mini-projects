@@ -11,16 +11,16 @@ class WordGen {
     this.#vowels = vowels;
   }
 
-  #getRandomInteger(maxNumber) {
+  getRandomInteger(maxNumber) {
     return Math.floor(Math.random() * maxNumber);
   }
 
   #getRandomVowel() {
-    return this.#vowels[this.#getRandomInteger(this.#vowels.length)];
+    return this.#vowels[this.getRandomInteger(this.#vowels.length)];
   }
 
   #getRandomConsonant() {
-    return this.#consonants[this.#getRandomInteger(this.#consonants.length)]
+    return this.#consonants[this.getRandomInteger(this.#consonants.length)]
   }
 
   syllabic(syllables) {
@@ -51,7 +51,7 @@ class WordGen {
         return this.#getRandomConsonant() + randomVowel;
       };
 
-      let dice = this.#getRandomInteger(100);
+      let dice = this.getRandomInteger(100);
       let syllable = generateSyllable();
 
       if ((length - generatedWord.length) > 1) {
