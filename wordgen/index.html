@@ -22,10 +22,24 @@
       background-color: #333333;
       color: lightgray;
       padding: var(--global-padding);
-      margin: 5px;
+      width: 95%;
+      margin: 5px auto;
       font-family: 'Courier New', Courier, monospace;
       border-radius: 5px;
       column-count: 5;
+    }
+
+    .filters {
+      width: 95%;
+      display: block;
+      border: 1px solid black;
+      padding: var(--global-padding);
+      margin: 5px auto;
+      text-align: center;
+    }
+
+    button#reroll-words {
+      width: 100%;
     }
 
     .generated-word {
@@ -41,21 +55,25 @@
 
 <body>
   <div id="main-content">
-    Units: <select id="generator-mode">
-      <option value="syllabic">Syllables</option>
-      <option value="natural">Character</option>
-    </select>:
-    <input id="units" type="number" value="3"><br>
+    <div class="filters">
+      Units: <select id="generator-mode">
+        <option value="syllabic">Syllables</option>
+        <option value="natural">Character</option>
+      </select>:
+      <input id="units" type="number" value="3"><br>
 
-    Count: <input id="count" type="number" value="10"><br>
+      Count: <input id="count" type="number" value="10"><br>
 
-    Sort: <select id="sort-mode">
-      <option value="none">None</option>
-      <option value="asc">Ascending</option>
-      <option value="desc">Descending</option>
-    </select><br>
+      Sort: <select id="sort-mode">
+        <option value="none">None</option>
+        <option value="asc">Ascending</option>
+        <option value="desc">Descending</option>
+      </select><br>
+    </div>
 
-    <button id="reroll-words">Generate!</button>
+    <div class="filters">
+      <button id="reroll-words">Generate!</button>
+    </div>
 
     <div id="word-list"></div>
   </div>
