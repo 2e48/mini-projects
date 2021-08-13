@@ -11,7 +11,7 @@ class JapaneseWordGen extends WordGen {
         "sa": "さ", "shi": "し", "su": "す", "se": "せ", "so": "そ",
         "za": "ざ", "ji": "じ", "zu": "ず", "ze": "ぜ", "zo": "ぞ",
         "ta": "た", "chi": "ち", "tsu": "つ", "te": "て", "to": "と",
-        "da": "だ", "di": "ぢ", "zu": "づ", "de": "で", "do": "ど",
+        "da": "だ", "di": "ぢ", "du": "づ", "de": "で", "do": "ど",
         "na": "な", "ni": "に", "nu": "ぬ", "ne": "ね", "no": "の",
         "ha": "は", "hi": "ひ", "fu": "ふ", "he": "へ", "ho": "ほ",
         "ba": "ば", "bi": "び", "bu": "ぶ", "be": "べ", "bo": "ぼ",
@@ -40,7 +40,7 @@ class JapaneseWordGen extends WordGen {
         "sa": "サ", "shi": "シ", "su": "ス", "se": "セ", "so": "ソ",
         "za": "ザ", "ji": "ジ", "zu": "ズ", "ze": "ゼ", "zo": "ゾ",
         "ta": "タ", "chi": "チ", "tsu": "ツ", "te": "テ", "to": "ト",
-        "da": "ダ", "ji": "ヂ", "zu": "ヅ", "de": "デ", "do": "ド",
+        "da": "ダ", "di": "ヂ", "du": "ヅ", "de": "デ", "do": "ド",
         "na": "ナ", "ni": "ニ", "nu": "ヌ", "ne": "ネ", "no": "ノ",
         "ha": "ハ", "hi": "ヒ", "fu": "フ", "he": "ヘ", "ho": "ホ",
         "ba": "バ", "bi": "ビ", "bu": "ブ", "be": "ベ", "bo": "ボ",
@@ -65,17 +65,40 @@ class JapaneseWordGen extends WordGen {
     };
   }
 
-  getRandomCharacter({ type = "hiragana", includeRomanji = false } = {}) {
+  getRandomCharacter({ type = "hiragana" } = {}) {
     const romanjiList = Object.keys(this.#characters[type]);
     const romanji = romanjiList[this.getRandomInteger(romanjiList.length)];
     const character = this.#characters[type][romanji];
 
-    if (includeRomanji) {
-      return {
-        romanji, character, type
-      };
-    } else {
-      return { character, type };
+    return {
+      romanji, character, type
+    };
+  }
+
+  getRandomWord({ type = "hiragana", length = 3 } = {}) {
+    let romanjiWord = "";
+    let japaneseWord = "";
+
+    for (let i = 0; i < length; i++) {
+      let characterObj = this.getRandomCharacter({ type });
+      romanjiWord += characterObj.romanji;
+      japaneseWord += characterObj.character;
     }
+
+    return {
+      romanji: romanjiWord,
+      japanese: japaneseWord,
+      type
+    };
+  }
+
+  getMultipleWords({ type = "hiragana", length = 3, count = 5 } = {}) {
+    let wordsArray = [];
+
+    for (let i = 0; i < count; i++) {
+      wordsArray.push(this.getRandomWord({ type, length }));
+    }
+
+    return wordsArray;
   }
 }
