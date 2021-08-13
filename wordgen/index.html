@@ -80,14 +80,7 @@
     );
   });
 
-  const MODE = {
-    syllabic: function (syllables) {
-      return wordgen.syllabic(syllables);
-    },
-    natural: function (length) {
-      return wordgen.natural(length);
-    }
-  };
+
   const SORT = {
     NONE: 'none',
     ASC: 'asc',
@@ -96,7 +89,14 @@
 
   const showWords = (words, units, mode, wordListElement, sort = SORT.NONE) => {
     const wordgen = new WordGen();
-
+    const MODE = {
+      syllabic: function (syllables) {
+        return wordgen.syllabic(syllables);
+      },
+      natural: function (length) {
+        return wordgen.natural(length);
+      }
+    };
     wordListElement.innerHTML = '';
 
     let wordsArray = [];
