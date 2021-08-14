@@ -11,14 +11,14 @@
       --global-padding: 10px;
     }
 
-    div#main-content {
+    div.main-content {
       border: 1px solid black;
-      margin: auto;
+      margin: 10px auto;
       width: 75%;
       padding: var(--global-padding);
     }
 
-    div#word-list {
+    div.word-list {
       background-color: #333333;
       color: lightgray;
       padding: var(--global-padding);
@@ -26,7 +26,14 @@
       margin: 5px auto;
       font-family: 'Courier New', Courier, monospace;
       border-radius: 5px;
+    }
+
+    div#english-random-words {
       column-count: 5;
+    }
+
+    div#japanese-random-words {
+      column-count: 3;
     }
 
     .filters {
@@ -38,7 +45,7 @@
       text-align: center;
     }
 
-    button#reroll-words {
+    button.reroll-words {
       width: 100%;
     }
 
@@ -54,7 +61,7 @@
 </head>
 
 <body>
-  <div id="main-content">
+  <div class="main-content">
     <div class="filters">
       Units: <select id="generator-mode">
         <option value="syllabic">Syllables</option>
@@ -72,18 +79,38 @@
     </div>
 
     <div class="filters">
-      <button id="reroll-words">Generate!</button>
+      <button class="reroll-words" id="random-words">Generate!</button>
     </div>
 
-    <div id="word-list"></div>
+    <div class="word-list" id="english-random-words"></div>
+  </div>
+
+  <div class="main-content">
+    <div class="filters">
+      <select id="japanese-alphabet-type">
+        <option value="hiragana">Hiragana (ひらがな)</option>
+        <option value="katakana">Katakana (カタカナ)</option>
+      </select><br>
+      Characters:
+      <input id="japanese-syllable" type="number" value="3"><br>
+
+      Count: <input id="japanese-count" type="number" value="10"><br>
+    </div>
+
+    <div class="filters">
+      <button class="reroll-words" id="random-japanese-words">Generate!</button>
+    </div>
+
+    <div class="word-list" id="japanese-random-words"></div>
   </div>
 </body>
 
 <script src="js/word-gen.js"></script>
 <script src="js/japanese-gen.js"></script>
 <script>
-  const wordListDiv = document.getElementById('word-list');
-  const regenButton = document.getElementById('reroll-words');
+  // english words generator
+  const wordListDiv = document.getElementById('english-random-words');
+  const regenButton = document.getElementById('random-words');
   const unitInput = document.getElementById('units');
   const countInput = document.getElementById('count');
   const sortInput = document.getElementById('sort-mode');
@@ -98,7 +125,6 @@
       sortInput.value
     );
   });
-
 
   const SORT = {
     NONE: 'none',
@@ -133,6 +159,32 @@
 
     wordsArray.forEach(item => {
       wordListElement.innerHTML += `<span class="generated-word">${item}</span>`;
+    });
+  };
+
+  // japanese words generator
+  const japAlphabetType = document.getElementById("japanese-alphabet-type");
+  const japWordListDiv = document.getElementById("japanese-random-words");
+  const japWordLength = document.getElementById("japanese-syllable");
+  const japWordCount = document.getElementById("japanese-count");
+  const japGenButton = document.getElementById("random-japanese-words");
+
+  japGenButton.addEventListener("click", function () {
+    showJapWords(
+      japAlphabetType.value,
+      japWordLength.value,
+      japWordCount.value,
+      japWordListDiv
+    );
+  });
+
+  const japWordGen = new JapaneseWordGen();
+  const showJapWords = (type, length, count, outputDiv) => {
+    outputDiv.innerHTML = "";
+    const japWordList = japWordGen.getMultipleWords({ type, length, count });
+
+    japWordList.forEach(obj => {
+      outputDiv.innerHTML += `<span class="generated-word">${obj.romanji} (${obj.japanese})</span>`;
     });
   };
 </script>
