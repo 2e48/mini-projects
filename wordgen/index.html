@@ -14,8 +14,16 @@
     div.main-content {
       border: 1px solid black;
       margin: 10px auto;
-      width: 75%;
+      width: 50%;
       padding: var(--global-padding);
+    }
+
+    div.hidden {
+      display: none;
+    }
+
+    div.center-content {
+      text-align: center;
     }
 
     div.word-list {
@@ -61,7 +69,11 @@
 </head>
 
 <body>
-  <div class="main-content">
+  <div class="main-content filters">
+    <button class="top-buttons" data-show-this-element="english-random-container">Standard</button>
+    <button class="top-buttons" data-show-this-element="japanese-random-container">Japanese</button>
+  </div>
+  <div class="main-content generators" id="english-random-container">
     <div class="filters">
       Units: <select id="generator-mode">
         <option value="syllabic">Syllables</option>
@@ -85,7 +97,7 @@
     <div class="word-list" id="english-random-words"></div>
   </div>
 
-  <div class="main-content">
+  <div class="main-content generators hidden" id="japanese-random-container">
     <div class="filters">
       <select id="japanese-alphabet-type">
         <option value="hiragana">Hiragana (ひらがな)</option>
@@ -107,7 +119,7 @@
 
 <script src="js/word-gen.js"></script>
 <script src="js/japanese-gen.js"></script>
-<script>
+<script> // forms scripts logic
   // english words generator
   const wordListDiv = document.getElementById('english-random-words');
   const regenButton = document.getElementById('random-words');
@@ -187,6 +199,29 @@
       outputDiv.innerHTML += `<span class="generated-word">${obj.romanji} (${obj.japanese})</span>`;
     });
   };
+</script>
+<script> // 
+  const mainDivs = document.getElementsByClassName("generators");
+  const hideOtherDivs = (elementNotToHide = "") => {
+    for (let elem of mainDivs) {
+      if (elem.id === elementNotToHide) {
+        elem.classList.remove("hidden");
+      } else {
+        elem.classList.add("hidden");
+      }
+    }
+  };
+
+  const bindFunctionsToButtons = () => {
+    const buttons = document.getElementsByClassName("top-buttons");
+    for (let butt of buttons) {
+      butt.addEventListener("click", function () {
+        hideOtherDivs(this.dataset.showThisElement);
+      });
+    }
+  };
+
+  bindFunctionsToButtons();
 </script>
 
 </html>
