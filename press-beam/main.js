@@ -1,55 +1,102 @@
 const REFRESH_RATE = 25; // in ms
+const MOVEMENT_VALUE = 10; // in px
+const MAX_X = 500;
+const RAY_MIN_WIDTH = 1;
 
-let num = 0;
-let intervals = {};
+const element = document.getElementById('base');
+const element2 = document.getElementById('base-2');
+const element3 = document.getElementById('base-3');
+
+// new
+let rayCount = {};
+let rays = {};
+let rayIntervals = {
+  size: {},
+  move: {},
+};
 
 const spawnRay = (parentElement) => {
+  let elementCounter = rayCount[parentElement.id];
+
+  if (isNaN(elementCounter)) {
+    rayCount[parentElement.id] = 0;
+  }
+
+  rays[parentElement.id] = {};
+
   let ray = document.createElement('div');
-  ray.style.position = absolute;
-  ray.style.left = parentElement.style.left;
-  ray.style.top = parentElement.style.top;
-  ray.style.height = parentElement.style.height;
-  ray.style.width = '1px';
+  ray.style.position = 'absolute';
+  ray.style.left = '58px';
+  ray.style.top = parentElement.offsetTop + 'px'; // since not on the elem itself, via css
+  ray.style.height = parentElement.offsetHeight + 'px';
+  ray.style.width = RAY_MIN_WIDTH + 'px';
   ray.style.backgroundColor = 'green';
+  ray.id = `ray-${parentElement.id}-${rayCount[parentElement.id]}`;
+  document.body.appendChild(ray);
+
+  rays[parentElement.id][ray.id] = ray;
+
+  increaseRayLength(ray);
+
+  rayCount[parentElement.id]++;
 };
-const increaseRayLength = (spawnedRay) => { };
-const stopIncreasingRayLength = (ray) => { };
-const moveRay = (ray) => { };
-const destroyRay = (ray) => { };
+const increaseRayLength = (ray) => {
+  rayIntervals.size[ray.id] = setInterval(() => {
+    let rayWidth = parseInt(ray.style.width) + MOVEMENT_VALUE;
 
-// window.fire = function () {
-//   var bullet = document.createElement("div");
-//   bullet.style.position = "absolute";
-//   bullet.style.left = "25px";
-//   bullet.style.top = "100px";
-//   bullet.style.width = "5px";
-//   bullet.style.height = "50px";
-//   bullet.style.backgroundColor = "#00ff00";
-//   bullet.id = "bullet-" + num;
-//   document.body.appendChild(bullet);
+    if (rayWidth < MAX_X + RAY_MIN_WIDTH + MOVEMENT_VALUE) {
+      ray.style.width = rayWidth + 'px';
+    }
 
-//   bulletpos(bullet);
-//   num++;
-// }
+  }, REFRESH_RATE);
+};
+const stopIncreasingRayLength = (ray) => {
+  clearInterval(rayIntervals.size[ray.id]);
+};
+const moveRay = (ray) => {
+  rayIntervals.move[ray.id] = setInterval(() => {
+    let rayX = parseInt(ray.style.left) + MOVEMENT_VALUE;
+    let rayWidth = parseInt(ray.style.width);
 
+    ray.style.left = rayX + 'px';
 
+    // if (rayWidth > RAY_MIN_WIDTH) {
+    //   ray.style.width = (rayWidth - MOVEMENT_VALUE) + 'px';
+    // }
 
-// window.bulletpos = function (bullet) {
-//   var bulletX = parseInt(document.getElementById("base").style.left) + 20;
-//   var bulletY = parseInt(document.getElementById("base").style.top);
+    if (rayX > MAX_X) {
+      clearInterval(rayIntervals.move[ray.id]);
 
-//   bullet.style.left = bulletX + "px";
-//   bullet.style.top = bulletY + "px";
-//   intervals[bullet.id] = setInterval(function () { bulletmove(bullet) }, 25);
+      destroyRay(ray);
+    }
+  }, REFRESH_RATE);
+};
+const destroyRay = (ray) => {
+  ray.parentNode.removeChild(ray);
+};
 
-// }
+const createRayOnElement = (elem) => {
+  spawnRay(elem.target);
+};
 
-// window.bulletmove = function (bullet) {
-//   var bulletX = parseInt(bullet.style.left);
-//   bullet.style.left = (bulletX + 5) + "px";
+const moveRayInElement = (elem) => {
+  const rayId = `ray-${elem.target.id}-${rayCount[elem.target.id] - 1}`;
+  const lastRay = rays[elem.target.id][rayId];
 
-//   if (bulletX > 500) {
-//     clearInterval(intervals[bullet.id]);
-//     bullet.parentNode.removeChild(bullet);
-//   }
-// }
+  // console.log('count', rayCount[elem.target.id]);
+  // console.log('id', rayId);
+  // console.log('validation', rays);
+  // console.log('leave', lastRay);
+
+  stopIncreasingRayLength(lastRay);
+  moveRay(lastRay);
+};
+
+element.addEventListener('mouseenter', (elem) => createRayOnElement(elem));
+element.addEventListener('mouseleave', (elem) => moveRayInElement(elem));
+
+element2.addEventListener('mouseenter', (elem) => createRayOnElement(elem));
+element2.addEventListener('mouseleave', (elem) => moveRayInElement(elem));
+
+element3.addEventListener('mouseenter', (elem) => createRayOnElement(elem));
+element3.addEventListener('mouseleave', (elem) => moveRayInElement(elem));
