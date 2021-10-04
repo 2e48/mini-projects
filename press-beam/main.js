@@ -1,6 +1,6 @@
-const REFRESH_RATE = 15; // in ms
+const REFRESH_RATE = 16.6667; // in ms
 const MOVEMENT_VALUE = 5; // in px
-const MAX_X = 300;
+const MAX_X = 400;
 const RAY_MIN_WIDTH = 1;
 
 // new
@@ -101,7 +101,7 @@ const bindElements = () => {
 
 const generateElements = () => {
   const parent = document.getElementById('button-holders');
-  const spacing = 1;
+  const spacing = 5;
   const count = 3;
   const start = 10;
 
@@ -151,7 +151,7 @@ document.body.addEventListener('keypress', (keyEvent) => {
   // console.log('spawning', keyEvent.key, isPressed[keyEvent.key]);
 
   keyBind[keyEvent.key].classList.add('active');
-  createRayOnElement(keyBind[keyEvent.key], color[keyEvent.key]);
+  createRayOnElement(keyBind[keyEvent.key], '#bbd8ff');
 });
 
 document.body.addEventListener('keyup', (keyEvent) => {
