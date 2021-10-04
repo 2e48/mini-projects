@@ -8,6 +8,11 @@
   <title>Document</title>
 
   <style>
+    body {
+      background-color: black;
+      overflow: hidden;
+    }
+
     div#base {
       top: 100px;
     }
@@ -25,10 +30,23 @@
       position: absolute;
       width: 50px;
       height: 50px;
+      z-index: 50;
     }
 
     div.bases:hover {
-      background-color: green;
+      background-color: rgb(5, 228, 5);
+      transform: scale(1.1);
+    }
+
+    div.fade-curtain {
+      position: absolute;
+      background-color: rgba(0, 0, 0, 0);
+      background-image: linear-gradient(to right, rgba(0, 0, 0, 0), black);
+      top: 100px;
+      left: 50px;
+      width: 550px;
+      height: 200px;
+      z-index: 300;
     }
   </style>
 </head>
@@ -39,6 +57,8 @@
   <div class="bases" id="base-2"></div>
 
   <div class="bases" id="base-3"></div>
+
+  <div class="fade-curtain"></div>
 </body>
 <script src="main.js"></script>
 
