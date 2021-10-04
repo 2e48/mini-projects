@@ -15,16 +15,18 @@
     }
 
     div.bases {
-      background-color: red;
+      background-color: rgb(0, 87, 201);
       position: absolute;
       width: 50px;
       height: 50px;
+      transition: 0.25s;
       z-index: 10000;
     }
 
-    div.bases:hover {
-      background-color: rgb(5, 228, 5);
-      transform: scale(0.8);
+    div.bases.active {
+      background-color: rgb(187, 216, 255);
+      transform: scale(0.9);
+      transition: 0.25s;
     }
 
     div.fade-curtain {
@@ -41,9 +43,11 @@
 </head>
 
 <body>
-  <div id="button-holders"></div>
+  <div class="wrapper">
+    <div id="button-holders"></div>
 
-  <div class="fade-curtains"></div>
+    <div class="fade-curtains"></div>
+  </div>
 </body>
 <script src="main.js"></script>
 

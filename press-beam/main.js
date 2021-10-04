@@ -1,6 +1,6 @@
-const REFRESH_RATE = 25; // in ms
-const MOVEMENT_VALUE = 10; // in px
-const MAX_X = 2000;
+const REFRESH_RATE = 15; // in ms
+const MOVEMENT_VALUE = 5; // in px
+const MAX_X = 300;
 const RAY_MIN_WIDTH = 1;
 
 // new
@@ -22,7 +22,7 @@ const spawnRay = (parentElement, rayColor = 'green') => {
 
   let ray = document.createElement('div');
   ray.style.position = 'absolute';
-  ray.style.left = '50px';
+  ray.style.left = '60px';
   ray.style.top = parentElement.offsetTop + 'px';
   ray.style.height = parentElement.offsetHeight + 'px';
   ray.style.width = '0px';
@@ -58,7 +58,7 @@ const moveRay = (ray) => {
 
     if (rayX > MAX_X) {
       clearInterval(rayIntervals.move[ray.id]);
-
+      delete rayIntervals.move[ray.id];
       destroyRay(ray);
     }
   }, REFRESH_RATE);
@@ -67,13 +67,13 @@ const destroyRay = (ray) => {
   ray.parentNode.removeChild(ray);
 };
 
-const createRayOnElement = (elem, color) => {
-  spawnRay(elem.target, color);
+const createRayOnElement = (elem, color = 'green') => {
+  spawnRay(elem, color);
 };
 
 const moveRayInElement = (elem) => {
-  const rayId = `ray-${elem.target.id}-${rayCount[elem.target.id] - 1}`;
-  const lastRay = rays[elem.target.id][rayId];
+  const rayId = `ray-${elem.id}-${rayCount[elem.id] - 1}`;
+  const lastRay = rays[elem.id][rayId];
 
   stopIncreasingRayLength(lastRay);
   moveRay(lastRay);
@@ -101,8 +101,8 @@ const bindElements = () => {
 
 const generateElements = () => {
   const parent = document.getElementById('button-holders');
-  const spacing = 0;
-  const count = 5;
+  const spacing = 1;
+  const count = 3;
   const start = 10;
 
   for (let i = 0; i < count; i++) {
@@ -111,10 +111,63 @@ const generateElements = () => {
     button.className = 'bases';
     button.id = 'button-' + i;
 
-    console.log(button.id, 'added');
+    // console.log(button.id, 'added');
     parent.appendChild(button);
   }
 };
 
 generateElements();
-bindElements();
+//bindElements();
+
+const isPressed = {
+  'z': false,
+  'x': false,
+  'c': false,
+}
+
+document.body.addEventListener('keypress', (keyEvent) => {
+  const keyBind = {
+    'z': document.getElementById('button-0'),
+    'x': document.getElementById('button-1'),
+    'c': document.getElementById('button-2'),
+  }
+
+  const color = {
+    'z': 'yellow',
+    'x': 'green',
+    'c': 'yellow',
+  }
+
+  const keys = ['z', 'x', 'c'];
+  if (!keys.includes(keyEvent.key)) {
+    return;
+  }
+
+  if (isPressed[keyEvent.key]) {
+    return;
+  }
+
+  isPressed[keyEvent.key] = true;
+  // console.log('spawning', keyEvent.key, isPressed[keyEvent.key]);
+
+  keyBind[keyEvent.key].classList.add('active');
+  createRayOnElement(keyBind[keyEvent.key], color[keyEvent.key]);
+});
+
+document.body.addEventListener('keyup', (keyEvent) => {
+  const keyBind = {
+    'z': document.getElementById('button-0'),
+    'x': document.getElementById('button-1'),
+    'c': document.getElementById('button-2'),
+  }
+
+  const keys = ['z', 'x', 'c'];
+  if (!keys.includes(keyEvent.key)) {
+    return;
+  }
+  isPressed[keyEvent.key] = false;
+  // console.log('moving', keyEvent.key, isPressed[keyEvent.key]);
+
+  keyBind[keyEvent.key].classList.remove('active');
+  moveRayInElement(keyBind[keyEvent.key]);
+});
