@@ -1,11 +1,7 @@
 const REFRESH_RATE = 25; // in ms
 const MOVEMENT_VALUE = 10; // in px
-const MAX_X = 500;
+const MAX_X = 2000;
 const RAY_MIN_WIDTH = 1;
-
-const element = document.getElementById('base');
-const element2 = document.getElementById('base-2');
-const element3 = document.getElementById('base-3');
 
 // new
 let rayCount = {};
@@ -15,7 +11,7 @@ let rayIntervals = {
   move: {},
 };
 
-const spawnRay = (parentElement) => {
+const spawnRay = (parentElement, rayColor = 'green') => {
   let elementCounter = rayCount[parentElement.id];
 
   if (isNaN(elementCounter)) {
@@ -26,11 +22,11 @@ const spawnRay = (parentElement) => {
 
   let ray = document.createElement('div');
   ray.style.position = 'absolute';
-  ray.style.left = '58px';
-  ray.style.top = parentElement.offsetTop + 'px'; // since not on the elem itself, via css
+  ray.style.left = '50px';
+  ray.style.top = parentElement.offsetTop + 'px';
   ray.style.height = parentElement.offsetHeight + 'px';
-  ray.style.width = RAY_MIN_WIDTH + 'px';
-  ray.style.backgroundColor = 'green';
+  ray.style.width = '0px';
+  ray.style.backgroundColor = rayColor;
   ray.id = `ray-${parentElement.id}-${rayCount[parentElement.id]}`;
   document.body.appendChild(ray);
 
@@ -44,7 +40,7 @@ const increaseRayLength = (ray) => {
   rayIntervals.size[ray.id] = setInterval(() => {
     let rayWidth = parseInt(ray.style.width) + MOVEMENT_VALUE;
 
-    if (rayWidth < MAX_X + RAY_MIN_WIDTH + MOVEMENT_VALUE) {
+    if (rayWidth < MAX_X) {
       ray.style.width = rayWidth + 'px';
     }
 
@@ -60,10 +56,6 @@ const moveRay = (ray) => {
 
     ray.style.left = rayX + 'px';
 
-    // if (rayWidth > RAY_MIN_WIDTH) {
-    //   ray.style.width = (rayWidth - MOVEMENT_VALUE) + 'px';
-    // }
-
     if (rayX > MAX_X) {
       clearInterval(rayIntervals.move[ray.id]);
 
@@ -75,28 +67,54 @@ const destroyRay = (ray) => {
   ray.parentNode.removeChild(ray);
 };
 
-const createRayOnElement = (elem) => {
-  spawnRay(elem.target);
+const createRayOnElement = (elem, color) => {
+  spawnRay(elem.target, color);
 };
 
 const moveRayInElement = (elem) => {
   const rayId = `ray-${elem.target.id}-${rayCount[elem.target.id] - 1}`;
   const lastRay = rays[elem.target.id][rayId];
 
-  // console.log('count', rayCount[elem.target.id]);
-  // console.log('id', rayId);
-  // console.log('validation', rays);
-  // console.log('leave', lastRay);
-
   stopIncreasingRayLength(lastRay);
   moveRay(lastRay);
 };
 
-element.addEventListener('mouseenter', (elem) => createRayOnElement(elem));
-element.addEventListener('mouseleave', (elem) => moveRayInElement(elem));
+const bindElements = () => {
+  const elements = document.getElementsByClassName('bases');
 
-element2.addEventListener('mouseenter', (elem) => createRayOnElement(elem));
-element2.addEventListener('mouseleave', (elem) => moveRayInElement(elem));
+  const colors = [
+    'pink', 'blue', 'yellow', 'white', 'green'
+  ];
 
-element3.addEventListener('mouseenter', (elem) => createRayOnElement(elem));
-element3.addEventListener('mouseleave', (elem) => moveRayInElement(elem));
+  // bind elements
+  for (const element of elements) {
+    const randomColor = colors[
+      Math.floor(
+        Math.random() * colors.length
+      )
+    ];
+
+    element.addEventListener('mouseenter', (elem) => createRayOnElement(elem, randomColor));
+    element.addEventListener('mouseleave', (elem) => moveRayInElement(elem));
+  }
+};
+
+const generateElements = () => {
+  const parent = document.getElementById('button-holders');
+  const spacing = 0;
+  const count = 5;
+  const start = 10;
+
+  for (let i = 0; i < count; i++) {
+    let button = document.createElement('div');
+    button.style.top = (start + (spacing * i) + (50 * i)) + 'px';
+    button.className = 'bases';
+    button.id = 'button-' + i;
+
+    console.log(button.id, 'added');
+    parent.appendChild(button);
+  }
+};
+
+generateElements();
+bindElements();
