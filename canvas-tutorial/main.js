@@ -45,3 +45,48 @@ const trDraw = () => {
   }
 };
 trDraw();
+
+const grid = document.getElementById('grid');
+const gridDraw = () => {
+  if (grid.getContext) {
+    let ctx = grid.getContext('2d');
+
+    // for (let x = 0; x < 150; x += 10) {
+    //   for (let y = 0; y < 150; y += 10) {
+    //     ctx.strokeRect(x, y, 10, 10);
+    //   }
+    // }
+
+    for (let x = 0; x <= grid.width; x += 10) {
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, 150);
+    }
+
+    for (let y = 0; y <= grid.height; y += 10) {
+      ctx.moveTo(0, y);
+      ctx.lineTo(150, y);
+    }
+
+    ctx.stroke();
+  }
+};
+gridDraw();
+
+
+const smiley = document.getElementById('smiley');
+const smileDraw = () => {
+  if (smiley.getContext) {
+    let ctx = smiley.getContext('2d');
+
+    ctx.beginPath();
+    ctx.arc(75, 75, 50, 0, Math.PI * 2, true); // Outer circle
+    ctx.moveTo(110, 75);
+    ctx.arc(75, 75, 35, 0, Math.PI, false);  // Mouth (clockwise)
+    ctx.moveTo(65, 65);
+    ctx.arc(60, 65, 5, 0, Math.PI * 2, true);  // Left eye
+    ctx.moveTo(95, 65);
+    ctx.arc(90, 65, 5, 0, Math.PI * 2, true);  // Right eye
+    ctx.stroke();
+  }
+};
+smileDraw();
