@@ -115,28 +115,3 @@ function everyinterval(n) {
 function accelerate(n) {
   myGamePiece.gravity = n;
 }
-
-
-
-const foo = {
-  bar: 10,
-  baz: 20,
-  vec: 'doof',
-  yoo: function () {
-    if (this.bar) {
-      if (!this.baz && this.doc()) {
-        this.vec = {
-          mop: function () {
-            return;
-          }
-        };
-      }
-    }
-  },
-  doc: function () {
-    if (bar) {
-      return this.yoo();
-    }
-    return this.baz;
-  }
-};
