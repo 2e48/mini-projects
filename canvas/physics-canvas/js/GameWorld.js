@@ -1,6 +1,6 @@
 class GameWorld {
 
-    constructor(canvasId){
+    constructor(canvasId) {
         this.canvas = null;
         this.context = null;
         this.oldTimeStamp = 0;
@@ -18,7 +18,7 @@ class GameWorld {
 
         // Request an animation frame for the first time
         // The gameLoop() function will be called as a callback of this request
-        window.requestAnimationFrame((timeStamp) => {this.gameLoop(timeStamp)});
+        window.requestAnimationFrame((timeStamp) => { this.gameLoop(timeStamp) });
     }
 
     createWorld() {
@@ -64,21 +64,19 @@ class GameWorld {
             this.gameObjects[i].isColliding = false;
         }
 
-        for (var i = 0; i < this.gameObjects.length; i++)
-        {
+        for (var i = 0; i < this.gameObjects.length; i++) {
             obj1 = this.gameObjects[i];
-            for (var j = i + 1; j < this.gameObjects.length; j++)
-            {
+            for (var j = i + 1; j < this.gameObjects.length; j++) {
                 obj2 = this.gameObjects[j];
 
                 if (this.rectIntersect(obj1.x, obj1.y, obj1.width, obj1.height, obj2.x, obj2.y, obj2.width, obj2.height)) {
                     obj1.isColliding = true;
                     obj2.isColliding = true;
 
-                    var vCollision = {x: obj2.x - obj1.x, y: obj2.y - obj1.y};
-                    var distance = Math.sqrt((obj2.x-obj1.x)*(obj2.x-obj1.x) + (obj2.y-obj1.y)*(obj2.y-obj1.y));
-                    var vCollisionNorm = {x: vCollision.x / distance, y: vCollision.y / distance};
-                    var vRelativeVelocity = {x: obj1.vx - obj2.vx, y: obj1.vy - obj2.vy};
+                    var vCollision = { x: obj2.x - obj1.x, y: obj2.y - obj1.y };
+                    var distance = Math.sqrt((obj2.x - obj1.x) * (obj2.x - obj1.x) + (obj2.y - obj1.y) * (obj2.y - obj1.y));
+                    var vCollisionNorm = { x: vCollision.x / distance, y: vCollision.y / distance };
+                    var vRelativeVelocity = { x: obj1.vx - obj2.vx, y: obj1.vy - obj2.vy };
                     var speed = vRelativeVelocity.x * vCollisionNorm.x + vRelativeVelocity.y * vCollisionNorm.y;
 
                     if (speed < 0) {
@@ -98,7 +96,7 @@ class GameWorld {
     rectIntersect(x1, y1, w1, h1, x2, y2, w2, h2) {
 
         // Check x and y for overlap
-        if (x2 > w1 + x1 || x1 > w2 + x2 || y2 > h1 + y1 || y1 > h2 + y2){
+        if (x2 > w1 + x1 || x1 > w2 + x2 || y2 > h1 + y1 || y1 > h2 + y2) {
             return false;
         }
 
