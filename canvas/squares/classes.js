@@ -34,14 +34,28 @@ class MainSquare extends CanvasObject {
 
     this.toLeft = true;
     this.downwards = true;
+    this.speedX = 1;
+    this.speedY = 1;
+  }
+
+  setSpeedX(speed) {
+    this.speedX = speed;
+    return this;
+  }
+
+  setSpeedY(speed) {
+    this.speedY = speed;
+    return this;
   }
 
   flipX() {
     this.toLeft = !this.toLeft;
+    return this;
   }
 
   flipY() {
     this.downwards = !this.downwards;
+    return this;
   }
 }
 
