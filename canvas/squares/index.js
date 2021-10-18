@@ -9,6 +9,8 @@ let colors = ['blue', 'red', 'green',];
 let baseTimeStamp = 0;
 let secondsPassed = 0;
 
+let displayFps = false;
+
 let reqFrame;
 
 function rand(max) {
@@ -27,7 +29,7 @@ function init(reset = false) {
   if (reset) {
     squares = [];
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 1000; i++) {
       squares.push(spawnSquare());
     }
   }
@@ -60,7 +62,7 @@ function frameLoop(timeStamp) {
 
   // Move forward in time with a maximum amount
   // secondsPassed = Math.min(secondsPassed, 0.1);
-  squares.push(spawnSquare());
+  //squares.push(spawnSquare());
   update(secondsPassed);
   draw();
 
@@ -137,21 +139,17 @@ function draw() {
 
   squares.forEach(i => i.draw());
 
-  drawFps(baseTimeStamp);
+  if (displayFps) drawFps(baseTimeStamp);
 }
 
 // let started = false;
-// canvas.addEventListener('mouseenter', () => {
-//   init(!started);
+canvas.addEventListener('mouseenter', () => {
+  displayFps = true;
+});
 
-//   if (!started) started = true;
-// });
-
-// canvas.addEventListener('mouseleave', () => {
-//   window.cancelAnimationFrame(reqFrame);
-
-//   reqFrame = null;
-// });
+canvas.addEventListener('mouseleave', () => {
+  displayFps = false;
+});
 
 init(true);
 
