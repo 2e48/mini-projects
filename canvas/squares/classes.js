@@ -28,7 +28,7 @@ class CanvasObject {
   }
 }
 
-class MainSquare extends CanvasObject {
+class Square extends CanvasObject {
   constructor(context, x, y, w, h) {
     super(context, x, y, w, h);
 

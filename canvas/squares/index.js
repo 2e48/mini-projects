@@ -3,8 +3,6 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-const timeConstant = 10000000000000;
-
 let squares = [];
 let colors = ['blue', 'red', 'green',];
 
@@ -29,11 +27,9 @@ function init(reset = false) {
   if (reset) {
     squares = [];
 
-    // for (let i = 0; i < 100; i++) {
-    //   squares.push(spawnSquare());
-    // }
-
-    squares.push(spawnSquare());
+    for (let i = 0; i < 5; i++) {
+      squares.push(spawnSquare());
+    }
   }
 
   reqFrame = window.requestAnimationFrame(frameLoop);
@@ -42,7 +38,7 @@ function init(reset = false) {
 function spawnSquare() {
   let s = 5;//Math.max(10, rand(25));
 
-  let sq = new MainSquare(ctx, rand(canvas.width), rand(canvas.height), s, s)
+  let sq = new Square(ctx, rand(canvas.width), rand(canvas.height), s, s)
     .setColor(randomColor())
     .setSpeedX(Math.max(50, rand(100)))
     .setSpeedY(Math.max(50, rand(100)));
@@ -63,8 +59,8 @@ function frameLoop(timeStamp) {
   baseTimeStamp = timeStamp;
 
   // Move forward in time with a maximum amount
-  secondsPassed = Math.min(secondsPassed, 0.1);
-
+  // secondsPassed = Math.min(secondsPassed, 0.1);
+  squares.push(spawnSquare());
   update(secondsPassed);
   draw();
 
@@ -122,32 +118,40 @@ function squareUpdate(sq, timestamp) {
   sq.update(x, y, sq.w, sq.h, sq.color);
 }
 
+function drawFps(timeStamp) {
+  // Calculate fps
+  let fps = 1 / secondsPassed;
+  let ftime = 1000 / fps;
+  ctx.fillStyle = 'rgba(0,0,0,1)';
+  ctx.fillRect(0, 0, 125, 33);
+
+  ctx.font = '12px Arial';
+  ctx.fillStyle = 'white';
+  ctx.fillText('FPS: ' + fps.toPrecision(2) + ' ' + ftime.toPrecision(4) + 'ms', 5, 15);
+  ctx.fillText('Objects: ' + squares.length, 5, 27);
+}
+
 function draw() {
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+  ctx.fillStyle = 'rgba(255, 255, 255, 1)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   squares.forEach(i => i.draw());
+
+  drawFps(baseTimeStamp);
 }
 
-let started = false;
-canvas.addEventListener('mouseenter', () => {
-  console.log('enter')
-  // init(!started);
+// let started = false;
+// canvas.addEventListener('mouseenter', () => {
+//   init(!started);
 
-  // if (!started) started = true;
+//   if (!started) started = true;
+// });
 
-  squares.push(spawnSquare());
-});
+// canvas.addEventListener('mouseleave', () => {
+//   window.cancelAnimationFrame(reqFrame);
 
-canvas.addEventListener('mouseleave', () => {
-  // window.cancelAnimationFrame(reqFrame);
+//   reqFrame = null;
+// });
 
-  // reqFrame = null;
-});
+init(true);
 
-document.getElementById('reset').addEventListener('click', () => {
-  started = false;
-  init(true);
-});
-
-init();
