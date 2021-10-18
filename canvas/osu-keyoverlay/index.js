@@ -19,6 +19,11 @@ let secondsPassed = 0;
 let k1 = new KeySquare(context, 10, 10, 50, 50);
 let k2 = new KeySquare(context, 10, 70, 50, 50);
 
+let rays = {
+  k1: [],
+  k2: [],
+};
+
 function initialize() {
   window.requestAnimationFrame(frameLoop);
 }
