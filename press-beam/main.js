@@ -1,6 +1,6 @@
 const REFRESH_RATE = 16.6667; // in ms
 const MOVEMENT_VALUE = 5; // in px
-const MAX_X = 400;
+const MAX_X = 1000;
 const RAY_MIN_WIDTH = 1;
 
 // new
