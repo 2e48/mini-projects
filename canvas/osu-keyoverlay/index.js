@@ -13,15 +13,49 @@ let input = {
   k2: false,
 }
 
-function initialize() { }
+let oldTimeStamp = 0;
+let secondsPassed = 0;
 
-function frameLoop() { }
+let k1 = new KeySquare(context, 10, 10, 50, 50);
+let k2 = new KeySquare(context, 10, 70, 50, 50);
 
-function update() { }
+function initialize() {
+  window.requestAnimationFrame(frameLoop);
+}
 
-function draw() { }
+function frameLoop(timeStamp) {
+  secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+  oldTimeStamp = timeStamp;
 
-function clearCanvas() { }
+  update();
+  clearCanvas();
+  draw();
+
+  window.requestAnimationFrame(frameLoop);
+}
+
+function update() {
+  if (input.k1) {
+    k1.activate();
+  } else {
+    k1.deactivate();
+  }
+
+  if (input.k2) {
+    k2.activate();
+  } else {
+    k2.deactivate();
+  }
+}
+
+function draw() {
+  k1.draw();
+  k2.draw();
+}
+
+function clearCanvas() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+}
 
 document.body.addEventListener('keydown', evt => {
   const code = evt.keyCode;
@@ -31,7 +65,7 @@ document.body.addEventListener('keydown', evt => {
     case KEY.X: input.k2 = true; break;
   }
 
-  console.log(input);
+  //console.log(input);
 });
 
 document.body.addEventListener('keyup', evt => {
@@ -42,5 +76,7 @@ document.body.addEventListener('keyup', evt => {
     case KEY.X: input.k2 = false; break;
   }
 
-  console.log(input);
+  //console.log(input);
 });
+
+initialize();

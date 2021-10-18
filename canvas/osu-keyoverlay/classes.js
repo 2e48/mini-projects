@@ -32,10 +32,12 @@ class KeySquare extends CanvasObject {
 
   setActiveColor(color) {
     this.activeColor = color;
+    return this;
   }
 
   toggle() {
     this.activate != this.isActive();
+    return this;
   }
 
   activate() {
@@ -48,6 +50,6 @@ class KeySquare extends CanvasObject {
 
   draw() {
     this.context.fillStyle = this.isActive ? this.activeColor : this.color;
-    this.context.fillRect(this.x, this.y, this.h, this.w);
+    this.context.fillRect(this.x, this.y, this.w, this.h);
   }
 }
