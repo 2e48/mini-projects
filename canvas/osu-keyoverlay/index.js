@@ -94,6 +94,10 @@ function draw() {
     rays[key.name].forEach(ray => ray.draw());
   });
 
+  drawGradient();
+}
+
+function drawGradient() {
   const grd = context.createLinearGradient(0, 0, canvas.width * 0.50, 0);
   grd.addColorStop(0, 'rgba(0,0,0,0)');
   grd.addColorStop(1, 'rgba(0,0,0,1)');
