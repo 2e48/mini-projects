@@ -50,8 +50,16 @@ class KeySquare extends CanvasObject {
   }
 
   draw() {
-    this.context.fillStyle = this.isActive ? this.activeColor : this.color;
+    //this.context.fillStyle = this.isActive ? this.activeColor : this.color;
+
+    this.context.fillStyle = this.color;
     this.context.fillRect(this.x, this.y, this.w, this.h);
+
+    if (this.isActive) {
+      this.context.strokeStyle = this.activeColor;
+      this.context.lineWidth = 7;
+      this.context.strokeRect(this.x, this.y, this.w, this.h);
+    }
   }
 }
 
