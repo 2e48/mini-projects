@@ -77,7 +77,7 @@ function update(secondsPassed) {
 
     rays[key.name].forEach((ray, index) => {
       if (ray.x > canvas.width + key.x + key.w) {
-        rays[key.name].splice(index, 1);
+        rays[key.name].shift();
       } else {
         ray.update(secondsPassed);
       }
