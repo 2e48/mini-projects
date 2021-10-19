@@ -7,10 +7,10 @@ let oldTimeStamp = 0;
 let secondsPassed = 0;
 
 let keys = [
-  new KeySquare(context, 10, 10, 50, 50, 'k1').setActiveColor('blue').setColor('gray'),
-  new KeySquare(context, 10, 70, 50, 50, 'k2').setActiveColor('red').setColor('gray'),
-  new KeySquare(context, 10, 130, 50, 50, 'm1').setActiveColor('red').setColor('gray'),
-  new KeySquare(context, 10, 190, 50, 50, 'm2').setActiveColor('blue').setColor('gray'),
+  new KeySquare(context, 10, 10, 50, 50, 'k1').setActiveColor('#ffd81a').setColor('black'),
+  new KeySquare(context, 10, 70, 50, 50, 'k2').setActiveColor('#ffd81a').setColor('black'),
+  new KeySquare(context, 10, 130, 50, 50, 'm1').setActiveColor('#fe05a2').setColor('black'),
+  new KeySquare(context, 10, 190, 50, 50, 'm2').setActiveColor('#fe05a2').setColor('black'),
 ];
 
 let rays = {
