@@ -3,20 +3,6 @@
 const canvas = document.getElementById('canvas!');
 const context = canvas.getContext('2d');
 
-const KEY = {
-  Z: 90,
-  X: 88,
-  NUM1: 97,
-  NUM3: 99,
-};
-
-let input = {
-  k1: false,
-  k2: false,
-  m1: false,
-  m2: false,
-}
-
 let oldTimeStamp = 0;
 let secondsPassed = 0;
 
@@ -91,7 +77,6 @@ function spawnRay(baseKey) {
   const y = baseKey.y;
   const w = 0;
   const h = baseKey.h;
-  const ctx = baseKey.context;
 
   const ray = new KeyRay(context, x, y, w, h)
     .setColor(baseKey.activeColor)
@@ -111,7 +96,6 @@ function draw() {
 
   const grd = context.createLinearGradient(0, 0, canvas.width * 0.50, 0);
   grd.addColorStop(0, 'rgba(0,0,0,0)');
-  //grd.addColorStop(.5, 'rgba(0,0,0,0.75)');
   grd.addColorStop(1, 'rgba(0,0,0,1)');
 
   context.fillStyle = grd;
@@ -121,27 +105,5 @@ function draw() {
 function clearCanvas() {
   context.clearRect(0, 0, canvas.width, canvas.height);
 }
-
-document.body.addEventListener('keydown', evt => {
-  const code = evt.keyCode;
-
-  switch (code) {
-    case KEY.Z: input.k1 = true; break;
-    case KEY.X: input.k2 = true; break;
-    case KEY.NUM1: input.m1 = true; break;
-    case KEY.NUM3: input.m2 = true; break;
-  }
-});
-
-document.body.addEventListener('keyup', evt => {
-  const code = evt.keyCode;
-
-  switch (code) {
-    case KEY.Z: input.k1 = false; break;
-    case KEY.X: input.k2 = false; break;
-    case KEY.NUM1: input.m1 = false; break;
-    case KEY.NUM3: input.m2 = false; break;
-  }
-});
 
 initialize();
