@@ -23,11 +23,12 @@ class CanvasObject {
 }
 
 class KeySquare extends CanvasObject {
-  constructor(context, x, y, w, h) {
+  constructor(context, x, y, w, h, name) {
     super(context, x, y, w, h);
 
     this.activeColor = 'yellow';
     this.isActive = false;
+    this.name = name;
   }
 
   setActiveColor(color) {
@@ -78,9 +79,20 @@ class KeyRay extends CanvasObject {
     this.isMoving = true;
   }
 
-  update(x, y, w, h) {
-    super.update(x, y, w, h);
+  update(timeStamp) {
+    if (this.isMoving) {
+      this.x += this.scrollSpeed * timeStamp;
+    }
 
+    if (this.isGrowing) {
+      this.w += this.scrollSpeed * timeStamp;
+    }
 
+    super.update(this.x, this.y, this.w, this.h);
+  }
+
+  draw() {
+    this.context.fillStyle = this.color;
+    this.context.fillRect(this.x, this.y, this.w, this.h);
   }
 }
