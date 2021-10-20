@@ -1,3 +1,40 @@
+class Canvas2D {
+  constructor(htmlCanvas = null) {
+    this.canvas = null;
+    this.context = null;
+
+    if (htmlCanvas !== null) {
+      this.setCanvas(htmlCanvas);
+    }
+  }
+
+  setCanvas(htmlCanvas) {
+    if (typeof this.canvas === 'string') {
+      this.canvas = document.getElementById(htmlCanvas);
+    } else if (this.canvas instanceof Element) {
+      this.canvas = htmlCanvas;
+    } else {
+      throw 'Supplied canvas is not a string id or element';
+    }
+
+    if (this.canvas.getContext) {
+      this.context = this.canvas.getContext('2d');
+    } else {
+      throw 'The element supplied is not a <canvas>';
+    }
+
+    return this;
+  }
+
+  getContext() {
+    return this.context;
+  }
+
+  clearCanvas() {
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  }
+}
+
 class CanvasObject {
   constructor(context, x, y, w, h) {
     this.context = context;
