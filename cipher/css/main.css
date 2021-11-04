@@ -1,0 +1,44 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+div.content {
+  width: 580px;
+  height: fit-content;
+  margin: auto;
+  padding: 5px;
+  border: 1px solid black;
+}
+
+@media only screen and (max-width: 600px) {
+  div.content {
+    width: 95%;
+    padding-top: 50px;
+  }
+}
+
+input.full,
+textarea.full,
+select.full {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 100%;
+}
+
+input.half,
+textarea.half,
+select.half {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 50%;
+}
+
+label.input-title {
+  display: inline-block;
+  width: 100%;
+}
+
+textarea.output {
+  height: 200px;
+}
+

@@ -5,42 +5,38 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    textarea,
-    input[type="text"],
-    button,
-    select {
-      margin: 10px;
-      width: 50%;
-    }
 
-    textarea {
-      height: 100px;
-    }
+  <link rel="stylesheet" type="text/css" href="css/main.css">
 
-    input#key,
-    textarea#encoded {
-      font-family: monospace;
-    }
-  </style>
-
-  <script src="cipher-classes.js"></script>
+  <script src="js/cipher-classes.js"></script>
   <title>Document</title>
 </head>
 
 <body>
-  <select id="cipher-type">
-    <option value="keyIndex">Key Indexed</option>
-    <option value="keyRotate">Key Rotating</option>
-  </select><br>
-  <textarea id="base"></textarea><br>
-  <input type="text" id="key"><br>
-  <button id="encode">Encode!</button><br>
-  <textarea id="encoded"></textarea>
-  <button id="decode">Decode!</button><br>
-  <textarea id="decoded"></textarea><br>
+  <div class="content">
+    <label class="input-title" for="cipher-type">Cipher type:</label>
+    <select id="cipher-type" class="full">
+      <option value="keyIndex">Key Indexed</option>
+      <option value="keyRotate">Key Rotating</option>
+    </select>
 
-  <script src="index.js"></script>
+    <label class="input-title" for="base">Input</label>
+    <textarea id="base" class="full"></textarea>
+
+    <label class="key" for="base">Key:</label>
+    <input type="text" id="key" class="full">
+
+    <label class="key" for="encode">Encode the above: (paste the result here if decoding)</label>
+    <input type="button" id="encode" value="Encode!" class="full">
+    <textarea id="encoded" class="full"></textarea>
+
+    <label class="key" for="encode">Decode the above:</label>
+    <input type="button" id="decode" value="Decode!" class="full">
+    <textarea id="decoded" class="full"></textarea>
+  </div>
+
+
+  <script src="js/index.js"></script>
 </body>
 
 </html>

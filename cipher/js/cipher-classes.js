@@ -14,6 +14,20 @@ class CipherUtils {
 
     return [head, ...this.chunk(tail, size)];
   }
+
+  randomKey(length = 10) {
+    let str = '';
+    const min = 33;
+    const max = 126;
+
+    while (str.length < length) {
+      const rK = min + Math.floor(Math.random() * (max - min));
+      str += String.fromCharCode(rK);
+      str = this.removeDupes(str);
+    }
+
+    return str;
+  }
 }
 
 class KeyIndexed extends CipherUtils {

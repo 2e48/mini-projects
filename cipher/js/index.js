@@ -6,6 +6,19 @@ const keyInput = document.getElementById('key');
 const encodedBox = document.getElementById('encoded');
 const decodedBox = document.getElementById('decoded');
 
+const loadParams = function () {
+  const hash = new URL(location).hash;
+
+  if (!hash) return;
+
+  let [key, decode] = hash.split(':#:');
+
+  keyInput.value = decodeURIComponent(key.split('').splice(1).join(''));
+  encodedBox.value = decodeURIComponent(decode);
+
+  document.getElementById('decode').click();
+};
+
 const cipherTypes = {
   'keyIndex': new KeyIndexed(),
   'keyRotate': new KeyRotate(),
@@ -22,3 +35,5 @@ document.getElementById('decode').addEventListener('click', function () {
 
   decodedBox.value = text;
 });
+
+loadParams();
