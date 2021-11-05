@@ -68,6 +68,53 @@ class KeyIndexed extends CipherUtils {
 
 }
 
+class EncryptSauce extends KeyIndexed {
+  constructor() {
+    super();
+
+    this.key = '';
+    this.url = '';
+    this.ciphered = '';
+  }
+
+  encode(url, key) {
+    this.key = key;
+    this.url = url;
+
+    const clue = this.generateClues(this.key, Math.floor(Math.random() * 5));
+
+    return '';
+  }
+
+  decode(string) {
+
+  }
+
+  linkParams(link) {
+
+  }
+
+  generateClues(key, count = 3) {
+    let indexClues = [];
+
+    while (indexClues.length < count) {
+      indexClues.push(Math.floor(Math.random() * key.length));
+    }
+
+    let pairs = indexClues.map(n => [key.charAt(n), n]);
+
+    let firstHalf = '';
+    let secondHalf = '';
+
+    pairs.forEach(a => {
+      firstHalf += a[0].toString();
+      secondHalf += a[1].toString();
+    });
+
+    return `${firstHalf} -> ${secondHalf}`;
+  }
+}
+
 class KeyRotate extends CipherUtils {
   constructor() { super(); }
 

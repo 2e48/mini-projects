@@ -17,17 +17,13 @@ div.content {
   }
 }
 
-input.full,
-textarea.full,
-select.full {
+input.full, textarea.full, select.full {
   box-sizing: border-box;
   display: inline-block;
   width: 100%;
 }
 
-input.half,
-textarea.half,
-select.half {
+input.half, textarea.half, select.half {
   box-sizing: border-box;
   display: inline-block;
   width: 50%;
@@ -41,4 +37,3 @@ label.input-title {
 textarea.output {
   height: 200px;
 }
-
