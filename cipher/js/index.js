@@ -5,6 +5,8 @@ const baseInput = document.getElementById('base');
 const keyInput = document.getElementById('key');
 const encodedBox = document.getElementById('encoded');
 const decodedBox = document.getElementById('decoded');
+const encodeButton = document.getElementById('encode');
+const decodeButton = document.getElementById('decode');
 
 const loadParams = function () {
   const hash = new URL(location).hash;
@@ -16,7 +18,7 @@ const loadParams = function () {
   keyInput.value = decodeURIComponent(key.split('').splice(1).join(''));
   encodedBox.value = decodeURIComponent(decode);
 
-  document.getElementById('decode').click();
+  decodeButton.click();
 };
 
 const cipherTypes = {
@@ -24,13 +26,13 @@ const cipherTypes = {
   'keyRotate': new KeyRotate(),
 }
 
-document.getElementById('encode').addEventListener('click', function () {
+encodeButton.addEventListener('click', function () {
   const text = cipherTypes[cipherType.value].encode(baseInput.value, keyInput.value);
 
   encodedBox.value = text;
 });
 
-document.getElementById('decode').addEventListener('click', function () {
+decodeButton.addEventListener('click', function () {
   const text = cipherTypes[cipherType.value].decode(encodedBox.value, keyInput.value);
 
   decodedBox.value = text;
