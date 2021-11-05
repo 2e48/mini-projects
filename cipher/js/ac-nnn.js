@@ -12,7 +12,7 @@ const cipher = new KeyIndexed();
 let keyToPass = '';
 let cipherToPass = '';
 
-const generateKey = function (length = 10) {
+const generateKey = function () {
   keyInput.value = cipher.randomKey();
 };
 
@@ -37,15 +37,24 @@ const generateClues = function (key, count = 3) {
 };
 
 const obsfuscateLink = function (link) {
-  const urlObj = new URL(link);
+  let urlObj = null;
+
+  try {
+    urlObj = new URL(linkInput.value);
+  } catch (error) {
+    alert(error);
+  }
 
   const hostnameMinified = urlObj.hostname.replace(/(\w)\w+/g, '$1');
-  const pathnameCiphered = urlObj.pathname.replace(/\d+/, m => {
-    const ciph = cipher.encode(m, keyInput.value);
-    cipherToPass = encodeURIComponent(ciph);
+  const test1 = urlObj.pathname.split('/');
+  console.log(test1);
 
-    return ' => ' + ciph;
-  });
+  // const pathnameCiphered = urlObj.pathname.replace(/\d+/, m => {
+  //   const ciph = cipher.encode(m, keyInput.value);
+  //   cipherToPass = encodeURIComponent(ciph);
+
+  //   return ' => ' + ciph;
+  // });
 
   return `${hostnameMinified}${pathnameCiphered}`;
 };
@@ -57,8 +66,7 @@ const changeReferLink = function () {
 randomKey.addEventListener('click', () => generateKey());
 generateButton.addEventListener('click', () => {
   if (keyInput.value == '') {
-    alert('key needed');
-    return;
+    generateKey();
   }
 
   const clue = generateClues(keyInput.value, 3);
