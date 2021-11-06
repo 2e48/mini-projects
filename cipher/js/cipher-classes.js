@@ -144,10 +144,15 @@ class EncryptSauce extends KeyIndexed {
     let cipherList = {};
 
     const minifiedHost = url.hostname.replace(/(\w)\w+/g, '$1');
-    let pathnumberCiphered = url.pathname.replace(/\d+/, m => {
+
+    // TODO: fix this regex since it will break at twitter users who starts
+    //       with a number on their name sadge
+    let pathnumberCiphered = url.pathname.replace(/(?<=\/)\d+/, m => {
       cipherList[this.numberKey] = super.encode(m, this.key);
       return this.numberKey;
     });
+
+    console.log(this.numberKey, pathnumberCiphered);
 
     // TODO: have a better system for this handling different urls
     if (url.hostname.includes('twitter')) {
