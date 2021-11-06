@@ -14,16 +14,33 @@
 <body>
 
   <div class="content">
+    <h2>Encode</h2>
+
     <label class="input-title" for="raw-link">Raw link:</label>
     <input type="text" id="raw-link" class="full">
-
-    <label class="input-title" for="key">Key:</label>
-    <input id="key" class="half"><input type="button" id="key-random" class="half" value="random key">
-    <input type="button" id="gen-key" class="full" value="Generate">
+    <button id="gen-key" class="full focus">
+      Generate
+    </button>
     <label class="input-title" for="output">Output:</label>
     <textarea id="output-lol" class="full output" readonly></textarea>
+    <button id="copy" class="full secondary">
+      Copy to clipboard!
+    </button>
 
-    <a href="index.html" id="a-href-decoder">go to my decoder kek</a>
+    <h2>Decode</h2>
+    <label class="input-title" for="decode-intro">Magic words: (the thing to decrypt lol)</label>
+    <textarea id="decode-intro" class="full output"></textarea>
+    <button id="decode-button" class="full focus">
+      Decode!
+    </button>
+    <label class="input-title" for="decode-intro">Output:</label>
+    <textarea id="decode-outro" class="full output" readonly></textarea>
+    <button id="decoded-copy" class="full secondary">
+      Copy to clipboard!
+    </button>
+    <button id="decoded-open" class="full secondary">
+      Open the link!
+    </button>
   </div>
 
   <script src="js/cipher-classes.js"></script>
