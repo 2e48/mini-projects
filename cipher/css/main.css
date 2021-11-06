@@ -44,9 +44,9 @@ button.focus {
 
 button.secondary {
   margin: 10px 1px;
-  border: 1px solid white;
+  border: 1px solid rgb(114, 113, 113);
   border-radius: 20px;
-  color: white;
+  color: rgb(114, 113, 113);
 }
 
 label.input-title {
