@@ -46,7 +46,8 @@ const obsfuscateLink = function (link) {
   }
 
   const hostnameMinified = urlObj.hostname.replace(/(\w)\w+/g, '$1');
-  const test1 = urlObj.pathname.split('/');
+  const test1 = urlObj.pathname.split('/').slice(1);
+  console.log(urlObj);
   console.log(test1);
 
   // const pathnameCiphered = urlObj.pathname.replace(/\d+/, m => {
