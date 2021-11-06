@@ -74,7 +74,16 @@ class EncryptSauce extends KeyIndexed {
 
     this.key = '';
     this.url = '';
-    this.ciphered = '';
+
+    this.siteList = {
+      's.d.u': 'safebooru.donmai.us',
+      'd.d.u': 'danbooru.donmai.us',
+      'w.p.n': 'www.pixiv.net',
+      'p.n': 'pixiv.net',
+      'm.t.c': 'mobile.twitter.com',
+      't.c': 'twitter.com',
+      'w.t.c': 'www.twitter.com',
+    }
   }
 
   encode(url, key) {
@@ -84,12 +93,33 @@ class EncryptSauce extends KeyIndexed {
     const clue = this.generateClues(this.key, Math.max(2, Math.floor(Math.random() * 5)));
     const link = this.cipherLink(url);
 
-    console.log(clue, link);
-    return '';
+    return `${clue}\n${this.key}\n${link}`;
   }
 
-  decode(string) {
+  decode(code) {
+    const [clue, key, link, cipher1, cipher2] = code.split('\n');
 
+    //check if link is v1 or v2
+    if (link.includes('{{n}}')) {
+      // v2
+      let replaced = link.replace('{{n}}', super.decode(cipher1, key));
+
+      if (replaced.includes('{{u}}')) {
+        replaced = replaced.replace('{{u}}', super.decode(cipher2, key));
+      }
+
+      const fixDomain = replaced.replace(/^(?:\w\.){1,2}\w/, m => this.siteList[m]);
+
+      // sombug somewhere and replaceAll is a silver bullet
+      return `https://${fixDomain}`.replaceAll('\uffff\u000b\uffff', '');
+    } else {
+      // v1
+      const [base, toDecode] = link.split(' => ');
+      const domain = base.replace(/^(?:\w\.){1,2}\w/, m => this.siteList[m]);
+      const numbers = super.decode(toDecode, key);
+
+      return `https://${domain}${numbers}`;
+    }
   }
 
   cipherLink(link) {
@@ -139,7 +169,7 @@ class EncryptSauce extends KeyIndexed {
       secondHalf += a[1].toString();
     });
 
-    return `${firstHalf} -> ${secondHalf}`;
+    return `${firstHalf} => ${secondHalf}`;
   }
 }
 
