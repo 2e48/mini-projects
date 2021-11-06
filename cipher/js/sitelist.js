@@ -5,5 +5,5 @@ const sites = {
   'p.n': 'pixiv.net',
   'm.t.c': 'mobile.twitter.com',
   't.c': 'twitter.com',
+  'w.t.c': 'www.twitter.com',
 };
-

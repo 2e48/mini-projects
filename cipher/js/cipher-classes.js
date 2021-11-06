@@ -81,8 +81,10 @@ class EncryptSauce extends KeyIndexed {
     this.key = key;
     this.url = url;
 
-    const clue = this.generateClues(this.key, Math.floor(Math.random() * 5));
+    const clue = this.generateClues(this.key, Math.max(2, Math.floor(Math.random() * 5)));
+    const link = this.cipherLink(url);
 
+    console.log(clue, link);
     return '';
   }
 
@@ -90,8 +92,34 @@ class EncryptSauce extends KeyIndexed {
 
   }
 
-  linkParams(link) {
+  cipherLink(link) {
+    const url = new URL(link);
 
+    let cipherList = {};
+
+    const minifiedHost = url.hostname.replace(/(\w)\w+/g, '$1');
+    let pathnumberCiphered = url.pathname.replace(/\d+/, m => {
+      cipherList['{{n}}'] = super.encode(m, this.key);
+      return '{{n}}';
+    });
+
+    // TODO: have a better system for this handling different urls
+    if (url.hostname.includes('twitter')) {
+      // twitter hotfix
+      const username = new RegExp('/(.*)/status');
+      pathnumberCiphered = pathnumberCiphered.replace(username, (m, p1) => {
+        cipherList['{{u}}'] = super.encode(p1, this.key);
+        return '/{{u}}/status';
+      });
+    }
+
+    let output = `${minifiedHost}${pathnumberCiphered}`;
+
+    for (const property in cipherList) {
+      output += `\n${property} => ${cipherList[property]}`;
+    }
+
+    return output;
   }
 
   generateClues(key, count = 3) {
