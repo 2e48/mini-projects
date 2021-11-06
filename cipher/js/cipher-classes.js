@@ -75,6 +75,10 @@ class EncryptSauce extends KeyIndexed {
     this.key = '';
     this.url = '';
 
+    this.numberKey = '{{n}}';
+    this.userKey = '{{u}}';
+    this.separator = ' => ';
+
     this.siteList = {
       's.d.u': 'safebooru.donmai.us',
       'd.d.u': 'danbooru.donmai.us',
@@ -99,19 +103,31 @@ class EncryptSauce extends KeyIndexed {
   decode(code) {
     const [clue, key, link, cipher1, cipher2] = code.split('\n');
 
-    //check if link is v1 or v2
-    if (link.includes('{{n}}')) {
-      // v2
-      let replaced = link.replace('{{n}}', super.decode(cipher1, key));
+    //const 
 
-      if (replaced.includes('{{u}}')) {
-        replaced = replaced.replace('{{u}}', super.decode(cipher2, key));
+    //check if link is v1 or v2
+    if (link.includes(this.numberKey)) {
+      // v2
+      const nK = this.numberKey.length + this.separator.length;
+      let replaced = link.replace(
+        this.numberKey,
+        super.decode(cipher1.slice(nK).trim(), key.trim())
+      );
+
+      if (replaced.includes(this.userKey)) {
+        const uK = this.userKey.length + this.separator.length;
+        replaced = replaced.replace(
+          this.userKey,
+          super.decode(cipher2.slice(uK).trim(), key.trim())
+        );
       }
 
-      const fixDomain = replaced.replace(/^(?:\w\.){1,2}\w/, m => this.siteList[m]);
+      const fixDomain = replaced.replace(
+        /^(?:\w\.){1,2}\w/,
+        m => this.siteList[m]
+      );
 
-      // sombug somewhere and replaceAll is a silver bullet
-      return `https://${fixDomain}`.replaceAll('\uffff\u000b\uffff', '');
+      return `https://${fixDomain}`;
     } else {
       // v1
       const [base, toDecode] = link.split(' => ');
@@ -129,8 +145,8 @@ class EncryptSauce extends KeyIndexed {
 
     const minifiedHost = url.hostname.replace(/(\w)\w+/g, '$1');
     let pathnumberCiphered = url.pathname.replace(/\d+/, m => {
-      cipherList['{{n}}'] = super.encode(m, this.key);
-      return '{{n}}';
+      cipherList[this.numberKey] = super.encode(m, this.key);
+      return this.numberKey;
     });
 
     // TODO: have a better system for this handling different urls
@@ -138,15 +154,15 @@ class EncryptSauce extends KeyIndexed {
       // twitter hotfix
       const username = new RegExp('/(.*)/status');
       pathnumberCiphered = pathnumberCiphered.replace(username, (m, p1) => {
-        cipherList['{{u}}'] = super.encode(p1, this.key);
-        return '/{{u}}/status';
+        cipherList[this.userKey] = super.encode(p1, this.key);
+        return `/${this.userKey}/status`;
       });
     }
 
     let output = `${minifiedHost}${pathnumberCiphered}`;
 
     for (const property in cipherList) {
-      output += `\n${property} => ${cipherList[property]}`;
+      output += `\n${property}${this.separator}${cipherList[property].trim()}`;
     }
 
     return output;
@@ -169,7 +185,7 @@ class EncryptSauce extends KeyIndexed {
       secondHalf += a[1].toString();
     });
 
-    return `${firstHalf} => ${secondHalf}`;
+    return `${firstHalf}${this.separator}${secondHalf}`;
   }
 }
 
