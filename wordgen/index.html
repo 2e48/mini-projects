@@ -12,18 +12,9 @@
     }
 
     div.main-content {
-      border: 1px solid black;
       margin: 10px auto;
-      width: 50%;
+      width: 60%;
       padding: var(--global-padding);
-    }
-
-    div.hidden {
-      display: none;
-    }
-
-    div.center-content {
-      text-align: center;
     }
 
     div.word-list {
@@ -36,20 +27,62 @@
       border-radius: 5px;
     }
 
-    div#english-random-words {
-      column-count: 5;
-    }
-
-    div#japanese-random-words {
-      column-count: 3;
-    }
-
     .filters {
       width: 95%;
       display: block;
-      border: 1px solid black;
       padding: var(--global-padding);
       margin: 5px auto;
+      text-align: center;
+    }
+
+    @media only screen and (max-width: 600px) {
+      div.main-content {
+        width: 100%;
+        padding: 0px;
+      }
+
+      div#english-random-words {
+        column-count: 1;
+      }
+
+      div#japanese-random-words {
+        column-count: 1;
+      }
+    }
+
+    @media only screen and (min-width: 600px) {
+      div.main-content {
+        width: 75%;
+      }
+
+      div#english-random-words {
+        column-count: 3;
+      }
+
+      div#japanese-random-words {
+        column-count: 2;
+      }
+    }
+
+    @media only screen and (min-width: 768px) {
+      div.main-content {
+        width: 60%;
+      }
+
+      div#english-random-words {
+        column-count: 4;
+      }
+
+      div#japanese-random-words {
+        column-count: 3;
+      }
+    }
+
+    div.hidden {
+      display: none;
+    }
+
+    div.center-content {
       text-align: center;
     }
 
