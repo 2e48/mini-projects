@@ -157,9 +157,11 @@
 
 <script src="js/word-gen.js"></script>
 <script src="js/japanese-gen.js"></script>
+<script src="js/fave-handler.js"></script>
 <script> // forms scripts logic
   // utility functions
   const faveWordListDiv = document.getElementById('fave-words');
+  const faveHandler = new FaveWords();
 
   const appendWordsTo = function (element, word, hasFunction = true) {
     const span = document.createElement('span');
@@ -174,7 +176,12 @@
   };
 
   const wordFaves = function (elem) {
-    appendWordsTo(faveWordListDiv, elem.textContent, false);
+    const word = elem.textContent;
+
+    if (!faveHandler.exists(word)) {
+      faveHandler.add(word);
+      appendWordsTo(faveWordListDiv, word, false);
+    }
   };
 
   // english words generator
