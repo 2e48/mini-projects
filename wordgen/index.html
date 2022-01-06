@@ -41,11 +41,9 @@
         padding: 0px;
       }
 
-      div#english-random-words {
-        column-count: 1;
-      }
-
-      div#japanese-random-words {
+      div#english-random-words,
+      div#japanese-random-words,
+      div#fave-words {
         column-count: 1;
       }
     }
@@ -55,7 +53,8 @@
         width: 75%;
       }
 
-      div#english-random-words {
+      div#english-random-words,
+      div#fave-words {
         column-count: 3;
       }
 
@@ -69,7 +68,8 @@
         width: 60%;
       }
 
-      div#english-random-words {
+      div#english-random-words,
+      div#fave-words {
         column-count: 4;
       }
 
@@ -148,11 +148,35 @@
 
     <div class="word-list" id="japanese-random-words"></div>
   </div>
+
+  <div class="main-content faves">
+    Favorited words:
+    <div class="word-list" id="fave-words"></div>
+  </div>
 </body>
 
 <script src="js/word-gen.js"></script>
 <script src="js/japanese-gen.js"></script>
 <script> // forms scripts logic
+  // utility functions
+  const faveWordListDiv = document.getElementById('fave-words');
+
+  const appendWordsTo = function (element, word, hasFunction = true) {
+    const span = document.createElement('span');
+    span.className = "generated-word";
+    span.innerHTML = word;
+
+    if (hasFunction) {
+      span.setAttribute('onclick', 'wordFaves(this);');
+    }
+
+    element.appendChild(span);
+  };
+
+  const wordFaves = function (elem) {
+    appendWordsTo(faveWordListDiv, elem.textContent, false);
+  };
+
   // english words generator
   const wordListDiv = document.getElementById('english-random-words');
   const regenButton = document.getElementById('random-words');
@@ -203,7 +227,7 @@
     }
 
     wordsArray.forEach(item => {
-      wordListElement.innerHTML += `<span class="generated-word">${item}</span>`;
+      appendWordsTo(wordListDiv, item);
     });
   };
 
@@ -229,7 +253,7 @@
     const japWordList = japWordGen.getMultipleWords({ type, length, count });
 
     japWordList.forEach(obj => {
-      outputDiv.innerHTML += `<span class="generated-word">${obj.romanji} (${obj.japanese})</span>`;
+      appendWordsTo(outputDiv, `${obj.romanji} (${obj.japanese})`);
     });
   };
 </script>
