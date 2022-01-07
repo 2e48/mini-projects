@@ -163,13 +163,13 @@
   const faveWordListDiv = document.getElementById('fave-words');
   const faveHandler = new FaveWords();
 
-  const appendWordsTo = function (element, word, hasFunction = true) {
+  const appendWordsTo = function (element, word, hasFunction = true, onClickFunc = 'wordFaves(this);') {
     const span = document.createElement('span');
     span.className = "generated-word";
     span.innerHTML = word;
 
     if (hasFunction) {
-      span.setAttribute('onclick', 'wordFaves(this);');
+      span.setAttribute('onclick', onClickFunc);
     }
 
     element.appendChild(span);
