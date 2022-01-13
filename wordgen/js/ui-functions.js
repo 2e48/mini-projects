@@ -21,6 +21,8 @@ const faveWord = function (elem) {
     faveHandler.add(word);
     appendWordsTo(faveWordListDiv, word, true, 'unfaveWord(this);');
   }
+
+  console.log(faveHandler.listAll());
 };
 
 const unfaveWord = function (elem) {

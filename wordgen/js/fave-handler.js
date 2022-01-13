@@ -24,7 +24,7 @@ class FaveWords {
     if (this.exists(word)) {
       const index = this.#wordList.indexOf(word);
 
-      this.#wordList = this.#wordList.splice(index, 1);
+      this.#wordList.splice(index, 1);
 
       return true;
     }
