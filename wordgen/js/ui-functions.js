@@ -2,7 +2,7 @@
 const faveWordListDiv = document.getElementById('fave-words');
 const faveHandler = new FaveWords();
 
-const appendWordsTo = function (element, word, hasFunction = true, onClickFunc = 'wordFaves(this);') {
+const appendWordsTo = function (element, word, hasFunction = true, onClickFunc = 'faveWord(this);') {
   const span = document.createElement('span');
   span.className = "generated-word";
   span.innerHTML = word;
@@ -14,13 +14,19 @@ const appendWordsTo = function (element, word, hasFunction = true, onClickFunc =
   element.appendChild(span);
 };
 
-const wordFaves = function (elem) {
+const faveWord = function (elem) {
   const word = elem.textContent;
 
   if (!faveHandler.exists(word)) {
     faveHandler.add(word);
-    appendWordsTo(faveWordListDiv, word, false);
+    appendWordsTo(faveWordListDiv, word, true, 'unfaveWord(this);');
   }
+};
+
+const unfaveWord = function (elem) {
+  const word = elem.textContent;
+  faveHandler.remove(word);
+  elem.parentElement.removeChild(elem);
 };
 
 // english words generator
