@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    div {
+      /* border: 1px red solid !important; */
+    }
+
+    .container {
+      background-color: #282d2e;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(https://placekitten.com/550/175);
+      color: white;
+
+      height: 175px;
+      width: 550px;
+      border-radius: 25px;
+
+      padding: auto;
+
+      display: flex;
+      justify-content: space-evenly;
+    }
+
+    .image-holder {
+      margin: auto;
+      width: 150px;
+      height: 150px;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user {
+      margin: auto;
+      height: 150px;
+      width: 65%;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .username {
+      font-weight: bold;
+      font-size: x-large;
+    }
+
+    .country {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .flag {
+      font-size: xx-large;
+    }
+
+    img.avatar {
+      border-radius: 25px;
+      width: 150px;
+      height: 150px;
+    }
+
+    div.boxmove {
+      margin: 50px;
+      width: 150px;
+      height: 150px;
+      background-color: blue;
+
+      transition: 5s;
+    }
+
+    div.boxmove:hover {
+      position: relative;
+      top: -20px;
+      background-color: red;
+    }
+  </style>
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="image-holder">
+      <img class="avatar" src="https://placekitten.com/500/500">
+    </div>
+    <div class="user">
+      <div class="username">xXx_Pussy-SLayer_xXx_old</div>
+      <div class="country"><span class="flag">🇵🇭</span> <span class="country-name">Philippines</span></div>
+    </div>
+  </div>
+
+  <div class="boxmove">
+
+  </div>
+</body>
+
+</html>
