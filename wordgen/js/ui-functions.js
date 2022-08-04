@@ -89,6 +89,7 @@ const japWordListDiv = document.getElementById("japanese-random-words");
 const japWordLength = document.getElementById("japanese-syllable");
 const japWordCount = document.getElementById("japanese-count");
 const japGenButton = document.getElementById("random-japanese-words");
+const japShowRaw = document.getElementById("japanese-show-raw");
 
 japGenButton.addEventListener("click", function () {
   showJapWords(
@@ -104,8 +105,10 @@ const showJapWords = (type, length, count, outputDiv) => {
   outputDiv.innerHTML = "";
   const japWordList = japWordGen.getMultipleWords({ type, length, count });
 
+  const isShowingRaw = japShowRaw.checked;
   japWordList.forEach(obj => {
-    appendWordsTo(outputDiv, `${obj.romanji} (${obj.japanese})`);
+    let string = isShowingRaw ? `${obj.romanji} (${obj.japanese})` : `${obj.romanji}`;
+    appendWordsTo(outputDiv, string);
   });
 };
 // visibility toggle
