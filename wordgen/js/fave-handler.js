@@ -36,3 +36,10 @@ class FaveWords {
     return this.#wordList;
   }
 }
+
+// temp solution, i dont want to think atm
+class WordMasterList extends FaveWords {
+  constructor() {
+    super();
+  }
+}
