@@ -1,4 +1,4 @@
-class FaveWords {
+class WordList {
   /**
    * @type string[]
    */
@@ -37,8 +37,7 @@ class FaveWords {
   }
 }
 
-// temp solution, i dont want to think atm
-class WordMasterList extends FaveWords {
+class FaveWords extends WordList {
   constructor() {
     super();
   }
