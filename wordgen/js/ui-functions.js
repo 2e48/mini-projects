@@ -101,9 +101,10 @@ japGenButton.addEventListener("click", function () {
 });
 
 const japWordGen = new JapaneseWordGen();
+let japWordList = [];
 const showJapWords = (type, length, count, outputDiv) => {
   outputDiv.innerHTML = "";
-  const japWordList = japWordGen.getMultipleWords({ type, length, count });
+  japWordList = japWordGen.getMultipleWords({ type, length, count });
 
   const isShowingRaw = japShowRaw.checked;
   japWordList.forEach(obj => {
@@ -111,6 +112,7 @@ const showJapWords = (type, length, count, outputDiv) => {
     appendWordsTo(outputDiv, string);
   });
 };
+
 // visibility toggle
 const mainDivs = document.getElementsByClassName("generators");
 const hideOtherDivs = (elementNotToHide = "") => {
@@ -122,6 +124,20 @@ const hideOtherDivs = (elementNotToHide = "") => {
     }
   }
 };
+
+const updateDisplayedWords = () => {
+  japWordListDiv.innerHTML = "";
+  //faveWordListDiv.innerHTML = "";
+  // TODO: rewrite the fave list to support objects
+
+  const isShowingRaw = japShowRaw.checked;
+
+  japWordList.forEach(obj => {
+    let string = isShowingRaw ? `${obj.romanji} (${obj.japanese})` : `${obj.romanji}`;
+    appendWordsTo(japWordListDiv, string);
+  });
+};
+japShowRaw.addEventListener("click", updateDisplayedWords);
 
 const bindFunctionsToButtons = () => {
   const buttons = document.getElementsByClassName("top-buttons");
