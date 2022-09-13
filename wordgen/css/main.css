@@ -15,6 +15,7 @@ div.word-list {
     width: 95%;
     margin: 5px auto;
     font-family: 'Courier New', Courier, monospace;
+    font-size: x-large;
     border-radius: 5px;
 }
 
