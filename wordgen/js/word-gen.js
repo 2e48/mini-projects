@@ -75,7 +75,7 @@ class ObjectWordGen extends WordGen {
 
     return {
       lang: "standard",
-      mode: "syllabic",
+      type: "syllabic",
       word: generated,
     };
   }
@@ -85,7 +85,7 @@ class ObjectWordGen extends WordGen {
 
     return {
       lang: "standard",
-      mode: "natural",
+      type: "natural",
       word: generated,
     };
   }
