@@ -5,12 +5,14 @@ const faveHandler = new FaveWords();
 const appendWordsTo = function ({
   element,
   word,
+  data,
   hasFunction = true,
   onClickFunc = 'faveWord(this);',
 } = {}) {
   const span = document.createElement('span');
   span.className = "generated-word";
   span.innerHTML = word;
+  span.dataset.wordObject = JSON.stringify(data);
 
   if (hasFunction) {
     span.setAttribute('onclick', onClickFunc);
@@ -20,16 +22,21 @@ const appendWordsTo = function ({
 };
 
 const faveWord = function (elem) {
-  const word = elem.textContent;
+  const dataObj = JSON.parse(elem.dataset.wordObject);
+
+  const word = dataObj.word;
 
   if (!faveHandler.exists(word)) {
-    faveHandler.add(word);
+    faveHandler.add(dataObj);
     appendWordsTo({
       element: faveWordListDiv,
       word: word,
+      data: dataObj,
       onClickFunc: 'unfaveWord(this);',
     });
   }
+
+  console.log(faveHandler.listAll());
 };
 
 const unfaveWord = function (elem) {
@@ -128,10 +135,13 @@ let japWordList = [];
 
 const iterateJapWordList = (list, isShowingRaw, outputDiv) => {
   list.forEach(obj => {
+    if (obj.lang !== "japanese") return;
+
     let string = isShowingRaw ? `${obj.word} (${obj.alt})` : `${obj.word}`;
     appendWordsTo({
       element: outputDiv,
       word: string,
+      data: obj,
     });
   });
 };
@@ -146,11 +156,12 @@ const showJapWords = (type, length, count, outputDiv) => {
 
 const updateDisplayedWords = () => {
   japWordListDiv.innerHTML = "";
-  //faveWordListDiv.innerHTML = "";
+  faveWordListDiv.innerHTML = "";
   // TODO: rewrite the fave list to support objects
 
   const isShowingRaw = japShowRaw.checked;
   iterateJapWordList(japWordList, isShowingRaw, japWordListDiv);
+  iterateJapWordList(faveHandler.listAll(), isShowingRaw, faveWordListDiv);
 };
 japShowRaw.addEventListener("click", updateDisplayedWords);
 
