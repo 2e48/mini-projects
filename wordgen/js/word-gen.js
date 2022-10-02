@@ -64,3 +64,29 @@ class WordGen {
     return generatedWord;
   };
 }
+
+class ObjectWordGen extends WordGen {
+  constructor() {
+    super();
+  }
+
+  syllabic(syllables) {
+    let generated = super.syllabic(syllables);
+
+    return {
+      lang: "standard",
+      type: "syllabic",
+      word: generated,
+    };
+  }
+
+  natural(length, vowelChance = 20) {
+    let generated = super.natural(length, vowelChance);
+
+    return {
+      lang: "standard",
+      type: "natural",
+      word: generated,
+    };
+  }
+}

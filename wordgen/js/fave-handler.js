@@ -1,6 +1,6 @@
-class FaveWords {
+class WordList {
   /**
-   * @type string[]
+   * @type string[] | Object[]
    */
   #wordList;
 
@@ -34,5 +34,27 @@ class FaveWords {
 
   listAll() {
     return this.#wordList;
+  }
+
+  overwriteArray(array) {
+    this.#wordList = array;
+  }
+}
+
+class FaveWords extends WordList {
+  constructor() {
+    super();
+  }
+
+  exists(word) {
+    const count = this.listAll().filter(item => item.word === word).length;
+
+    return count > 0;
+  }
+
+  remove(word) {
+    const array = this.listAll().filter(i => i.word !== word);
+
+    this.overwriteArray(array);
   }
 }

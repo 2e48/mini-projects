@@ -102,3 +102,20 @@ class JapaneseWordGen extends WordGen {
     return wordsArray;
   }
 }
+
+class ObjectJapaneseWordGen extends JapaneseWordGen {
+  constructor() {
+    super();
+  }
+
+  getRandomWord({ type = "hiragana", length = 3 } = {}) {
+    let generated = super.getRandomWord({ type, length });
+
+    return {
+      lang: "japanese",
+      type: generated.type,
+      word: generated.romanji,
+      alt: generated.japanese,
+    };
+  }
+}
