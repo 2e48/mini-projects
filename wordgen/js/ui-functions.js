@@ -81,7 +81,7 @@ const SORT = {
 };
 
 const showWords = (words, units, mode, wordListElement, sort = SORT.NONE) => {
-  const wordgen = new WordGen();
+  const wordgen = new ObjectWordGen();
   const MODE = {
     syllabic: function (syllables) {
       return wordgen.syllabic(syllables);
@@ -108,7 +108,8 @@ const showWords = (words, units, mode, wordListElement, sort = SORT.NONE) => {
   wordsArray.forEach(item => {
     appendWordsTo({
       element: wordListDiv,
-      word: item,
+      word: item.word,
+      data: item,
     });
   });
 };
@@ -135,9 +136,12 @@ let japWordList = [];
 
 const iterateJapWordList = (list, isShowingRaw, outputDiv) => {
   list.forEach(obj => {
-    if (obj.lang !== "japanese") return;
+    let string = obj.word;
 
-    let string = isShowingRaw ? `${obj.word} (${obj.alt})` : `${obj.word}`;
+    if (obj.lang !== "standard") {
+      string = isShowingRaw ? `${obj.word} (${obj.alt})` : `${obj.word}`;
+    }
+
     appendWordsTo({
       element: outputDiv,
       word: string,
