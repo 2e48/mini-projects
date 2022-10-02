@@ -23,10 +23,9 @@ const appendWordsTo = function ({
 
 const faveWord = function (elem) {
   const dataObj = JSON.parse(elem.dataset.wordObject);
-
   let word = dataObj.word;
 
-  if (dataObj.lang !== "standard") {
+  if (dataObj.lang !== "standard" && japShowRaw.checked) {
     word += ` (${dataObj.alt})`;
   }
 
@@ -44,7 +43,8 @@ const faveWord = function (elem) {
 };
 
 const unfaveWord = function (elem) {
-  const word = elem.textContent;
+  const dataObj = JSON.parse(elem.dataset.wordObject);
+  let word = dataObj.word;
   faveHandler.remove(word);
   elem.parentElement.removeChild(elem);
 };
