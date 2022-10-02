@@ -38,6 +38,17 @@ const unfaveWord = function (elem) {
   elem.parentElement.removeChild(elem);
 };
 
+const mainDivs = document.getElementsByClassName("generators");
+const hideOtherDivs = (elementNotToHide = "") => {
+  for (let elem of mainDivs) {
+    if (elem.id === elementNotToHide) {
+      elem.classList.remove("hidden");
+    } else {
+      elem.classList.add("hidden");
+    }
+  }
+};
+
 // english words generator
 const wordListDiv = document.getElementById('english-random-words');
 const regenButton = document.getElementById('random-words');
