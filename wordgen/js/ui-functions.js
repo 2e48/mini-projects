@@ -24,9 +24,13 @@ const appendWordsTo = function ({
 const faveWord = function (elem) {
   const dataObj = JSON.parse(elem.dataset.wordObject);
 
-  const word = dataObj.word;
+  let word = dataObj.word;
 
-  if (!faveHandler.exists(word)) {
+  if (dataObj.lang !== "standard") {
+    word += ` (${dataObj.alt})`;
+  }
+
+  if (!faveHandler.exists(dataObj.word)) {
     faveHandler.add(dataObj);
     appendWordsTo({
       element: faveWordListDiv,
