@@ -2,7 +2,12 @@
 const faveWordListDiv = document.getElementById('fave-words');
 const faveHandler = new FaveWords();
 
-const appendWordsTo = function (element, word, hasFunction = true, onClickFunc = 'faveWord(this);') {
+const appendWordsTo = function ({
+  element,
+  word,
+  hasFunction = true,
+  onClickFunc = 'faveWord(this);',
+} = {}) {
   const span = document.createElement('span');
   span.className = "generated-word";
   span.innerHTML = word;
@@ -19,7 +24,11 @@ const faveWord = function (elem) {
 
   if (!faveHandler.exists(word)) {
     faveHandler.add(word);
-    appendWordsTo(faveWordListDiv, word, true, 'unfaveWord(this);');
+    appendWordsTo({
+      element: faveWordListDiv,
+      word: word,
+      onClickFunc: 'unfaveWord(this);',
+    });
   }
 };
 
@@ -79,7 +88,10 @@ const showWords = (words, units, mode, wordListElement, sort = SORT.NONE) => {
   }
 
   wordsArray.forEach(item => {
-    appendWordsTo(wordListDiv, item);
+    appendWordsTo({
+      element: wordListDiv,
+      word: item,
+    });
   });
 };
 
@@ -100,29 +112,25 @@ japGenButton.addEventListener("click", function () {
   );
 });
 
-const japWordGen = new JapaneseWordGen();
+const japWordGen = new ObjectJapaneseWordGen();
 let japWordList = [];
+
+const iterateJapWordList = (list, isShowingRaw, outputDiv) => {
+  list.forEach(obj => {
+    let string = isShowingRaw ? `${obj.word} (${obj.alt})` : `${obj.word}`;
+    appendWordsTo({
+      element: outputDiv,
+      word: string,
+    });
+  });
+};
+
 const showJapWords = (type, length, count, outputDiv) => {
   outputDiv.innerHTML = "";
   japWordList = japWordGen.getMultipleWords({ type, length, count });
 
   const isShowingRaw = japShowRaw.checked;
-  japWordList.forEach(obj => {
-    let string = isShowingRaw ? `${obj.romanji} (${obj.japanese})` : `${obj.romanji}`;
-    appendWordsTo(outputDiv, string);
-  });
-};
-
-// visibility toggle
-const mainDivs = document.getElementsByClassName("generators");
-const hideOtherDivs = (elementNotToHide = "") => {
-  for (let elem of mainDivs) {
-    if (elem.id === elementNotToHide) {
-      elem.classList.remove("hidden");
-    } else {
-      elem.classList.add("hidden");
-    }
-  }
+  iterateJapWordList(japWordList, isShowingRaw, outputDiv);
 };
 
 const updateDisplayedWords = () => {
@@ -131,11 +139,7 @@ const updateDisplayedWords = () => {
   // TODO: rewrite the fave list to support objects
 
   const isShowingRaw = japShowRaw.checked;
-
-  japWordList.forEach(obj => {
-    let string = isShowingRaw ? `${obj.romanji} (${obj.japanese})` : `${obj.romanji}`;
-    appendWordsTo(japWordListDiv, string);
-  });
+  iterateJapWordList(japWordList, isShowingRaw, japWordListDiv);
 };
 japShowRaw.addEventListener("click", updateDisplayedWords);
 
