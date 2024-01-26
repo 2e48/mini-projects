@@ -29,21 +29,21 @@ function init(reset = false) {
   if (reset) {
     squares = [];
 
-    for (let i = 0; i < 1000; i++) {
-      squares.push(spawnSquare());
-    }
+    // for (let i = 0; i < 7500; i++) {
+    //   squares.push(spawnSquare());
+    // }
   }
 
   reqFrame = window.requestAnimationFrame(frameLoop);
 }
 
 function spawnSquare() {
-  let s = 5;//Math.max(10, rand(25));
+  let s = 30;//Math.max(10, rand(25));
 
   let sq = new Square(ctx, rand(canvas.width), rand(canvas.height), s, s)
     .setColor(randomColor())
-    .setSpeedX(Math.max(50, rand(100)))
-    .setSpeedY(Math.max(50, rand(100)));
+    .setSpeedX(Math.max(5, rand(100)))
+    .setSpeedY(Math.max(5, rand(100)));
 
   if (rand(100) > 49) {
     sq.flipX();
@@ -62,7 +62,12 @@ function frameLoop(timeStamp) {
 
   // Move forward in time with a maximum amount
   // secondsPassed = Math.min(secondsPassed, 0.1);
-  //squares.push(spawnSquare());
+
+  if (squares.length > 499) {
+    squares.shift();
+  }
+  squares.push(spawnSquare());
+  
   update(secondsPassed);
   draw();
 
@@ -124,10 +129,11 @@ function drawFps(timeStamp) {
   // Calculate fps
   let fps = 1 / secondsPassed;
   let ftime = 1000 / fps;
+
   ctx.fillStyle = 'rgba(0,0,0,1)';
   ctx.fillRect(0, 0, 125, 33);
 
-  ctx.font = '12px Arial';
+  ctx.font = '12px Courier';
   ctx.fillStyle = 'white';
   ctx.fillText('FPS: ' + fps.toPrecision(2) + ' ' + ftime.toPrecision(4) + 'ms', 5, 15);
   ctx.fillText('Objects: ' + squares.length, 5, 27);
