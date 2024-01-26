@@ -1,3 +1,4 @@
+const tableBody = document.getElementById("table-content");
 const maxCacheSize = 50;
 
 let sqrtCache = [];
@@ -38,17 +39,35 @@ const noLibSqrt = (toRoot) => {
 let min = 0;
 let max = 0;
 
-for (let i = 0; i < maxCacheSize ** 2; i++) {
+for (let i = 1; i <= maxCacheSize ** 2; i++) {
   const normal = Math.sqrt(i).toFixed(2);
   const shortcut = shortcutSqrt(i).toFixed(2);
   const noLib = noLibSqrt(i).toFixed(2);
   const diff = shortcut - normal;
 
-  if (diff < min) min = diff;
-  if (diff > max) max = diff;
+  const row = document.createElement('tr');
 
-  console.log(shortcut, noLib);
-  //console.log(i, shortcut, normal, Math.abs(shortcut - normal));
+  const tdNum = document.createElement('td');
+  tdNum.innerText = i;
+  const tdNormal = document.createElement('td');
+  tdNormal.innerHTML = normal;
+  const tdShortcut = document.createElement('td');
+  tdShortcut.innerHTML = shortcut;
+  const tdNoLib = document.createElement('td');
+  tdNoLib.innerHTML = noLib;
+  const tdDiff = document.createElement('td');
+  tdDiff.innerHTML = diff.toFixed(2);
+
+  row.appendChild(tdNum);
+  row.appendChild(tdNormal);
+  row.appendChild(tdShortcut);
+  row.appendChild(tdNoLib);
+  row.appendChild(tdDiff);
+  tableBody.appendChild(row);
+}
+
+function element(name) { 
+  return document.createElement(name);
 }
 
 console.log(min, max);

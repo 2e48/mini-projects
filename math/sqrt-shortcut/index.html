@@ -5,13 +5,38 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+  <title>sqrt-shortcut</title>
+
+  <style>
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background-color: white;
+    }
+  </style>
 </head>
 
 <body>
-
+  <div class="container">
+    <main>
+      <table class="striped">
+        <caption>Square root table for the first 2500 numbers</caption>
+        <thead>
+          <tr>
+            <th>n</th>
+            <th><code>Math.sqrt(n)</code></th>
+            <th><code>shortcutSqrt(n)</code></th>
+            <th><code>noLibSqrt(n)</code></th>
+            <th>diff</th>
+          </tr>
+        </thead>
+        <tbody id="table-content"></tbody>
+      </table>
+    </main>
+  </div>
 </body>
-check console xd
 <script src="index.js"></script>
 
 </html>
