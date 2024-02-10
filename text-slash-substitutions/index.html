@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+  <title>text substitutions</title>
+
+  <style>
+    textarea {
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <p>Parses text with slashes to be displayed as a list or whatever</p>
+
+      <p>Example: <code>00001/2/3/4/67</code> would be <code>00001, 00002, 00003, 00004, 00067</code></p>
+    </header>
+    <main>
+      <fieldset>
+        <legend>Input</legend>
+        <p>
+          <label for="txtInput">Text with slashes:</label>
+          <textarea name="txtInput" id="txtInput" cols="30" rows="10"></textarea>
+        </p>
+        <p>
+          <button id="inputParse">Parse</button>
+        </p>
+      </fieldset>
+
+      <fieldset>
+        <legend>Output</legend>
+
+        <p>
+          <span id="spanHeader"></span>
+        </p>
+
+        <p>
+          <ul id="ulResult"></ul>
+        </p>
+      </fieldset>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
