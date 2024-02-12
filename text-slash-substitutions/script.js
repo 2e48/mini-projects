@@ -1,7 +1,14 @@
 const txtInput = document.getElementById("txtInput");
 const spanHeader = document.getElementById("spanHeader");
 const ulResult = document.getElementById("ulResult");
+const cbxContinous = document.getElementById("cbxContinous");
 
+/**
+ * @param {string} input 
+ * @param {boolean} isContinous 
+ * @param {string} separator 
+ * @returns string[]
+ */
 function parseInput(input, isContinous = false, separator = '/') {
   // no checking for now, too lazy
   // separator to be flexible in the future?
@@ -13,6 +20,7 @@ function parseInput(input, isContinous = false, separator = '/') {
   let lastVal = firstVal;
 
   // values holder, will find better options
+  /** @type string[] */
   let results = [];
 
   // opting for vanilla for loops
@@ -41,3 +49,16 @@ function parseInput(input, isContinous = false, separator = '/') {
   results.unshift(firstVal);
   return results;
 }
+
+document.getElementById('inputParse').addEventListener('click', function (e) {
+  let trimmedInput = txtInput.value.trim();
+  let c = cbxContinous.value;
+
+  
+
+  let result = parseInput(trimmedInput, c);
+  ulResult.innerHTML = ""
+  result.forEach(value => {
+    ulResult.innerHTML += `<li>${value}</li>`;
+  });
+});
