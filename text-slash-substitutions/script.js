@@ -52,9 +52,7 @@ function parseInput(input, isContinous = false, separator = '/') {
 
 document.getElementById('inputParse').addEventListener('click', function (e) {
   let trimmedInput = txtInput.value.trim();
-  let c = cbxContinous.value;
-
-  
+  let c = cbxContinous.checked;
 
   let result = parseInput(trimmedInput, c);
   ulResult.innerHTML = ""
