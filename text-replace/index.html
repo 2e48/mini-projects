@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Text Replacer</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+  <style>
+    input[type="text"], textarea {
+      font-family: 'Courier New', Courier, monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Text replacements</h1>
+    </header>
+    <main role="main">
+      <section id="keys">
+        <fieldset>
+          <legend>Key -> replacement</legend>
+          <div id="key-inputs">
+            <p class="grouped">
+              <input type="text" class="find-input" placeholder="find">
+              <input type="text" class="replace-input" placeholder="replace">
+              <button type="button" disabled="">🗑️</button>
+            </p>
+          </div>
+          <a href="#" id="new-replacement-pairs" class="button">Add things to replace</a>
+          
+        </fieldset>
+      </section>
+      <section id="input">
+        <fieldset>
+          <legend>Source</legend>
+          <a href="#" id="do-replacements" class="button">Start replacing text</a>
+          <textarea id="text-source" rows="15"></textarea>
+        </fieldset>
+      </section>
+      <section id="output">
+        <fieldset>
+          <legend>Result</legend>
+          <a href="#" id="copy-result" class="button">Copy result</a>
+          <textarea id="text-result" rows="15" readonly></textarea>
+        </fieldset>
+      </section>
+    </main>
+  </div>
+<script src="index.js"></script>
+</body>
+</html>
