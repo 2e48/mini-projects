@@ -7,30 +7,22 @@ const runReplacements = document.getElementById("do-replacements");
 const outputText = document.getElementById("text-result");
 const copyResultButton = document.getElementById("copy-result");
 
-function newReplaceGroup() { 
-  const pGroup = document.createElement("p");
-  pGroup.className = "grouped";
+function getTemplate(id) { 
+  const template = document.getElementById(id);
+  const fragment = document.importNode(template.content, true);
 
-  const findInput = document.createElement("input");
-  findInput.type = "text";
-  findInput.placeholder = "find";
-  findInput.className = "find-input";
-  pGroup.appendChild(findInput);
+  // a wrapper is needed, as this will return the first child
+  // of the <template> like a usual DOM
+  return fragment.firstElementChild;
+}
 
-  const replaceInput = document.createElement("input");
-  replaceInput.type = "text";
-  replaceInput.placeholder = "replace";
-  replaceInput.className = "replace-input";
-  pGroup.appendChild(replaceInput);
+function newReplaceGroup() {
+  const pGroup = getTemplate("template-replace-pairs");
 
-  const deleteButton = document.createElement("a");
-  deleteButton.href = "#";
-  deleteButton.className = "button error";
-  deleteButton.innerText = "🗑️";
-  deleteButton.addEventListener("click", () => {
+  let button = pGroup.querySelector("button");
+  button.addEventListener("click", () => {
     replacementPairs.removeChild(pGroup);
   });
-  pGroup.appendChild(deleteButton);
 
   replacementPairs.appendChild(pGroup);
 }
