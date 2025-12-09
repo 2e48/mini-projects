@@ -21,14 +21,8 @@
         <fieldset>
           <legend>Key -> replacement</legend>
           <div id="key-inputs">
-            <p class="grouped">
-              <input type="text" class="find-input" placeholder="find">
-              <input type="text" class="replace-input" placeholder="replace">
-              <button type="button" disabled="">🗑️</button>
-            </p>
           </div>
           <a href="#" id="new-replacement-pairs" class="button">Add things to replace</a>
-          
         </fieldset>
       </section>
       <section id="input">
@@ -47,6 +41,13 @@
       </section>
     </main>
   </div>
+  <template id="template-replace-pairs">
+    <p class="grouped">
+      <input type="text" class="find-input" placeholder="find">
+      <input type="text" class="replace-input" placeholder="replace">
+      <button type="button" disabled="">🗑️</button>
+    </p>
+  </template>
 <script src="index.js"></script>
 </body>
 </html>

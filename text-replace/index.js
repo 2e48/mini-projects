@@ -55,7 +55,6 @@ function getReplacePairs() {
 
 function applyReplacements() { 
   const pairs = getReplacePairs();
-  console.log(pairs);
   let text = sourceText.value;
 
   pairs.forEach(([find, replace]) => {
@@ -83,3 +82,5 @@ async function copyResult() {
 newPairs.addEventListener("click", () => newReplaceGroup());
 runReplacements.addEventListener("click", () => applyReplacements());
 copyResultButton.addEventListener("click", () => copyResult());
+
+newPairs.dispatchEvent(new Event("click"));
