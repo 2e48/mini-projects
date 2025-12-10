@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>danbooru-suggest</title>
+  <link href="https://unpkg.com/chota@latest" rel="stylesheet" />
+  <style>
+    .tag-artist { color: maroon; }
+    .tag-copyright { color: purple; }
+    .tag-character { color: green; }
+    .tag-general { color: blue; }
+    .tag-meta { color: orange; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Danbooru Tag Suggestion</h1>
+    </header>
+    <main>
+      <fieldset>
+        <legend>CSV Source</legend>
+        <select id="csv-source"></select>
+        <p id="csv-load-status"></p>
+      </fieldset>
+      <fieldset>
+        <legend>Type tags here</legend>
+        <textarea id="source" rows="10" placeholder="1girl, black hair, red eyes, ..."></textarea>
+      </fieldset>
+      <fieldset id="categories">
+        <legend>Categories</legend>
+        <label class="tag-general" for="check-general">
+          <input checked id="check-general" type="checkbox" />
+          General
+        </label>
+        <label class="tag-artist" for="check-artist">
+          <input checked id="check-artist" type="checkbox" />
+          Artist
+        </label>
+        <label class="tag-copyright" for="check-copyright">
+          <input checked id="check-copyright" type="checkbox" />
+          Copyright
+        </label>
+        <label class="tag-character" for="check-character">
+          <input checked id="check-character" type="checkbox" />
+          Character
+        </label>
+        <label class="tag-meta" for="check-meta">
+          <input checked id="check-meta" type="checkbox" />
+          Meta
+        </label>
+      </fieldset>
+      <fieldset>
+        <legend>Tags</legend>
+        <table class="striped" id="suggestions"></table>
+      </fieldset>
+    </main>
+  </div>
+  <script src="index.js"></script>
+</body>
+</html>
