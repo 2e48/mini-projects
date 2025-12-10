@@ -10,6 +10,10 @@
     .tag-character { color: green; }
     .tag-general { color: blue; }
     .tag-meta { color: orange; }
+    fieldset#tags-input-group {
+      position: sticky;
+      top: 0;
+    }
   </style>
 </head>
 <body>
@@ -23,7 +27,7 @@
         <select id="csv-source"></select>
         <p id="csv-load-status"></p>
       </fieldset>
-      <fieldset>
+      <fieldset id="tags-input-group">
         <legend>Type tags here</legend>
         <textarea id="source" rows="10" placeholder="1girl, black hair, red eyes, ..."></textarea>
       </fieldset>
