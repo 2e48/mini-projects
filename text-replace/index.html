@@ -23,12 +23,18 @@
           <p class="grouped">
             <select id="preset-selection">
               <optgroup label="Default">
-                <option value="none" selected>None</option>
-                <option value="single-to-double-brackets">{*} to {{*}}</option>
+                <option selected value="none">none</option>
+                <option value="single-to-double-brackets">single-to-double-brackets</option>
+                <option value="jai-pronouns-to-st">jai-pronouns-to-st</option>
+                <option value="st-pronouns-to-jai">st-pronouns-to-jai</option>
               </optgroup>
-              <optgroup label="Custom">
-              </optgroup>
+              <!-- <optgroup label="Custom"></optgroup> -->
             </select>
+          </p>
+          <p class="grouped">
+            <!-- <button id="preset-new">New</button> -->
+            <button id="preset-load">Load</button>
+            <!-- <button id="preset-save">Save</button> -->
           </p>
         </fieldset>
       </section>
@@ -42,14 +48,18 @@
       <section id="input">
         <fieldset>
           <legend>Source</legend>
-          <a class="button" href="#" id="do-replacements">Start replacing text</a>
+          <p class="grouped">
+            <button id="do-replacements">Start replacing text</button>
+          </p>
           <textarea id="text-source" rows="15"></textarea>
         </fieldset>
       </section>
       <section id="output">
         <fieldset>
           <legend>Result</legend>
-          <a class="button" href="#" id="copy-result">Copy result</a>
+          <p class="grouped">
+            <button id="copy-result">Copy result</button>
+          </p>
           <textarea id="text-result" readonly rows="15"></textarea>
         </fieldset>
       </section>

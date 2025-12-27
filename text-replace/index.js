@@ -6,15 +6,35 @@ const sourceText = document.getElementById("text-source");
 const runReplacements = document.getElementById("do-replacements");
 const outputText = document.getElementById("text-result");
 const copyResultButton = document.getElementById("copy-result");
-const presetSelection = document.getElementById("preset-selection");
 
-const defaultPresets = {
+const presetSelection = document.getElementById("preset-selection");
+const presetNew = document.getElementById("preset-new");
+const presetLoad = document.getElementById("preset-load");
+const presetSave = document.getElementById("preset-save");
+
+let defaultPresets = {
   "none": [],
   "single-to-double-brackets": [
     ["{user}", "<user>"],
     ["{<user>}", "{{user}}"],
+    ["<user>", "{{user}}"],
     ["{char}", "<char>"],
     ["{<char>}", "{{char}}"],
+    ["<char>", "{{char}}"],
+  ],
+  "jai-pronouns-to-st": [
+    ["{{sub}}", "{{pronoun.subjective}}"],
+    ["{{obj}}", "{{pronoun.objective}}"],
+    ["{{poss}}", "{{pronoun.pos_det}}"],
+    ["{{poss_p}}", "{{pronoun.pos_pro}}"],
+    ["{{ref}}", "{{pronoun.reflexive}}"],
+  ],
+  "st-pronouns-to-jai": [
+    ["{{pronoun.subjective}}", "{{sub}}"],
+    ["{{pronoun.objective}}", "{{obj}}"],
+    ["{{pronoun.pos_det}}", "{{poss}}"],
+    ["{{pronoun.pos_pro}}", "{{poss_p}}"],
+    ["{{pronoun.reflexive}}", "{{ref}}"],
   ],
 };
 
@@ -92,8 +112,25 @@ async function copyResult() {
   }
 }
 
+function loadPreset() {
+  const selectedPreset = presetSelection.value;
+  const pairsFromPreset = defaultPresets[selectedPreset];
+
+  if (!pairsFromPreset) return;
+
+  if (pairsFromPreset.length < 1) return;
+
+  replacementPairs.innerHTML = "";
+  pairsFromPreset.forEach(([find, replace]) => {
+    newReplaceGroup(find, replace);
+  });
+}
+
 newPairs.addEventListener("click", () => newReplaceGroup());
-runReplacements.addEventListener("click", () => applyReplacements());
-copyResultButton.addEventListener("click", () => copyResult());
+runReplacements.addEventListener("click", applyReplacements);
+copyResultButton.addEventListener("click", copyResult);
+
+presetLoad.addEventListener("click", loadPreset);
 
 newPairs.dispatchEvent(new Event("click"));
+presetLoad.dispatchEvent(new Event("click"));
