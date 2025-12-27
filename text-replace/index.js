@@ -6,6 +6,17 @@ const sourceText = document.getElementById("text-source");
 const runReplacements = document.getElementById("do-replacements");
 const outputText = document.getElementById("text-result");
 const copyResultButton = document.getElementById("copy-result");
+const presetSelection = document.getElementById("preset-selection");
+
+const defaultPresets = {
+  "none": [],
+  "single-to-double-brackets": [
+    ["{user}", "<user>"],
+    ["{<user>}", "{{user}}"],
+    ["{char}", "<char>"],
+    ["{<char>}", "{{char}}"],
+  ],
+};
 
 function getTemplate(id) { 
   const template = document.getElementById(id);
@@ -16,13 +27,23 @@ function getTemplate(id) {
   return fragment.firstElementChild;
 }
 
-function newReplaceGroup() {
+function newReplaceGroup(initialFind = "", initialReplace = "") {
   const pGroup = getTemplate("template-replace-pairs");
 
   let button = pGroup.querySelector("button");
   button.addEventListener("click", () => {
     replacementPairs.removeChild(pGroup);
   });
+
+  if (initialFind !== "") {
+    let findInput = pGroup.querySelector(".find-input");
+    findInput.value = initialFind;
+  }
+
+  if (initialReplace !== "") {
+    let replaceInput = pGroup.querySelector(".replace-input");
+    replaceInput.value = initialReplace;
+  }
 
   replacementPairs.appendChild(pGroup);
 }

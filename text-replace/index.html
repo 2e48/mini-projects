@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <title>Text Replacer</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+  <meta charset="UTF-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <link href="https://unpkg.com/chota@latest" rel="stylesheet" />
   <style>
     input[type="text"], textarea {
       font-family: 'Courier New', Courier, monospace;
@@ -17,37 +17,51 @@
       <h1>Text replacements</h1>
     </header>
     <main role="main">
+      <section>
+        <fieldset>
+          <legend>Preset</legend>
+          <p class="grouped">
+            <select id="preset-selection">
+              <optgroup label="Default">
+                <option value="none" selected>None</option>
+                <option value="single-to-double-brackets">{*} to {{*}}</option>
+              </optgroup>
+              <optgroup label="Custom">
+              </optgroup>
+            </select>
+          </p>
+        </fieldset>
+      </section>
       <section id="keys">
         <fieldset>
           <legend>Key -> replacement</legend>
-          <div id="key-inputs">
-          </div>
-          <a href="#" id="new-replacement-pairs" class="button">Add things to replace</a>
+          <div id="key-inputs"></div>
+          <button id="new-replacement-pairs">Add things to replace</button>
         </fieldset>
       </section>
       <section id="input">
         <fieldset>
           <legend>Source</legend>
-          <a href="#" id="do-replacements" class="button">Start replacing text</a>
+          <a class="button" href="#" id="do-replacements">Start replacing text</a>
           <textarea id="text-source" rows="15"></textarea>
         </fieldset>
       </section>
       <section id="output">
         <fieldset>
           <legend>Result</legend>
-          <a href="#" id="copy-result" class="button">Copy result</a>
-          <textarea id="text-result" rows="15" readonly></textarea>
+          <a class="button" href="#" id="copy-result">Copy result</a>
+          <textarea id="text-result" readonly rows="15"></textarea>
         </fieldset>
       </section>
     </main>
   </div>
   <template id="template-replace-pairs">
     <p class="grouped">
-      <input type="text" class="find-input" placeholder="find">
-      <input type="text" class="replace-input" placeholder="replace">
+      <input class="find-input" placeholder="find" type="text" />
+      <input class="replace-input" placeholder="replace" type="text" />
       <button type="button">x</button>
     </p>
   </template>
-<script src="index.js"></script>
-</body> 
+  <script src="index.js"></script>
+</body>
 </html>
