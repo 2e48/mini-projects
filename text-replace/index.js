@@ -116,8 +116,13 @@ function loadPreset() {
   const selectedPreset = presetSelection.value;
   const pairsFromPreset = defaultPresets[selectedPreset];
 
-  if (!pairsFromPreset) return;
+  if (selectedPreset === "none") {
+    replacementPairs.innerHTML = "";
+    newReplaceGroup();
+    return;
+  }
 
+  if (!pairsFromPreset) return;
   if (pairsFromPreset.length < 1) return;
 
   replacementPairs.innerHTML = "";
@@ -126,11 +131,18 @@ function loadPreset() {
   });
 }
 
+function fillPresetSelection(presets = defaultPresets) {
+  Object.keys(presets).forEach(item => {
+    presetSelection.innerHTML += `<option value="${item}">${item}</option>`
+  })
+}
+
 newPairs.addEventListener("click", () => newReplaceGroup());
 runReplacements.addEventListener("click", applyReplacements);
 copyResultButton.addEventListener("click", copyResult);
 
+fillPresetSelection();
 presetLoad.addEventListener("click", loadPreset);
-
-newPairs.dispatchEvent(new Event("click"));
 presetLoad.dispatchEvent(new Event("click"));
+
+// newPairs.dispatchEvent(new Event("click"));
