@@ -6,6 +6,7 @@ const sourceText = document.getElementById("text-source");
 const runReplacements = document.getElementById("do-replacements");
 const outputText = document.getElementById("text-result");
 const copyResultButton = document.getElementById("copy-result");
+const replaceStatus = document.getElementById("replace-status");
 
 const presetSelection = document.getElementById("preset-selection");
 const presetNew = document.getElementById("preset-new");
@@ -89,14 +90,22 @@ function getReplacePairs() {
 function applyReplacements() { 
   const pairs = getReplacePairs();
   let text = sourceText.value;
+  let count = 0;
 
   pairs.forEach(([find, replace]) => {
     if (find && replace) {
+      count += text.split(find).length - 1;
       text = text.replaceAll(find, replace);
     }
   });
 
   outputText.value = text;
+  
+  if (count > 0) {
+    replaceStatus.innerHTML = `Did ${count} replacements.`;
+  } else {
+    replaceStatus.innerHTML = "Nothing changed.";
+  }
 }
 
 async function copyResult() { 
