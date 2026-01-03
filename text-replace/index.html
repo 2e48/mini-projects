@@ -39,9 +39,8 @@
             </select>
           </p>
           <p class="grouped">
-            <!-- <button id="preset-new">New</button> -->
-            <button id="preset-load">Load</button>
-            <!-- <button id="preset-save">Save</button> -->
+            <button id="preset-load" title="Loads the preset. THIS WILL OVERRIDE YOUR CURRENT ONE">Load</button>
+            <button id="preset-view" title="Shows the preset contents in a separate dialog" disabled>View</button>
           </p>
         </fieldset>
       </section>
@@ -49,7 +48,9 @@
         <fieldset>
           <legend>Key -> replacement</legend>
           <div id="key-inputs"></div>
-          <button id="new-replacement-pairs">Add things to replace</button>
+          <button id="new-replacement-pairs">Add</button>
+          <button id="sort-replacement-pairs" disabled>Sort</button>
+          <button id="toggle-replacement-pairs" disabled>Toggle</button>
         </fieldset>
       </section>
       <section id="input">
@@ -59,6 +60,7 @@
             <button id="do-replacements">Start replacing text</button>
           </p>
           <textarea id="text-source" rows="15"></textarea>
+          <small id="replace-status">...</small>
         </fieldset>
       </section>
       <section id="output">
