@@ -1,0 +1,66 @@
+input[type="text"],
+textarea {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+dialog {
+    max-width: var(--grid-maxWidth);
+    width: 96%;
+}
+
+dialog#replace-steps-dialog {
+    details.replace-steps-details {
+        padding: 5px;
+        margin: 5px;
+        width: 100%;
+    }
+
+    summary.step-title {
+        padding: 5px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .step-content {
+        width: 100%;
+        font-family: 'Courier New', Courier, monospace;
+    }
+}
+
+
+body.dark {
+    --bg-color: #000;
+    --bg-secondary-color: #131316;
+    --font-color: #f5f5f5;
+    --color-grey: #ccc;
+    --color-darkGrey: #777;
+}
+
+body.dark {
+    :is(input, textarea, button, select) {
+        color: var(--font-color);
+        background-color: #272822;
+    }
+
+    ins {
+        color: green;
+    }
+
+    del {
+        color: red;
+    }
+
+    .step-content {
+        color: var(--font-color);
+    }
+
+    dialog#replace-steps-dialog {
+        background-color: var(--bg-color);
+        border: 1px solid white;
+    }
+
+    dialog#replace-steps-dialog summary.step-title {
+        color: var(--font-color);
+        background-color: #272822;
+    }
+}

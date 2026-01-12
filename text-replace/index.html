@@ -5,25 +5,7 @@
   <meta charset="UTF-8" />
   <meta content="width=device-width, initial-scale=1.0" name="viewport" />
   <link href="https://unpkg.com/chota@latest" rel="stylesheet" />
-  <style>
-    input[type="text"], textarea {
-      font-family: 'Courier New', Courier, monospace;
-    }
-  </style>
-  <style>
-    body.dark {
-      --bg-color: #000;
-      --bg-secondary-color: #131316;
-      --font-color: #f5f5f5;
-      --color-grey: #ccc;
-      --color-darkGrey: #777;
-    }
-
-    body.dark :is(input, textarea, button, select) {
-      color: var(--font-color);
-      background-color: #272822;
-    }
-  </style>
+  <link href="custom-style.css" rel="stylesheet" />
 </head>
 <body>
   <div class="container">
@@ -35,12 +17,17 @@
         <fieldset>
           <legend>Preset</legend>
           <p class="grouped">
-            <select id="preset-selection">
-            </select>
+            <select id="preset-selection"></select>
           </p>
           <p class="grouped">
-            <button id="preset-load" title="Loads the preset. THIS WILL OVERRIDE YOUR CURRENT ONE">Load</button>
-            <button id="preset-view" title="Shows the preset contents in a separate dialog" disabled>View</button>
+            <button id="preset-load" title="Loads the preset. THIS WILL OVERRIDE YOUR CURRENT ONE">
+              Load
+            </button>
+            <button disabled
+                    id="preset-view"
+                    title="Shows the preset contents in a separate dialog">
+              View
+            </button>
           </p>
         </fieldset>
       </section>
@@ -49,8 +36,8 @@
           <legend>Key -> replacement</legend>
           <div id="key-inputs"></div>
           <button id="new-replacement-pairs">Add</button>
-          <button id="sort-replacement-pairs" disabled>Sort</button>
-          <button id="toggle-replacement-pairs" disabled>Toggle</button>
+          <button disabled id="sort-replacement-pairs">Sort</button>
+          <button disabled id="toggle-replacement-pairs">Toggle</button>
         </fieldset>
       </section>
       <section id="input">
@@ -68,12 +55,23 @@
           <legend>Result</legend>
           <p class="grouped">
             <button id="copy-result">Copy result</button>
+            <button id="show-replacement-steps">Show steps taken</button>
           </p>
           <textarea id="text-result" readonly rows="15"></textarea>
         </fieldset>
       </section>
     </main>
   </div>
+
+  <!-- DIALOGS -->
+  <dialog id="replace-steps-dialog">
+    <div id="replacement-steps-container"></div>
+    <p>
+      <button id="replace-steps-dialog-close">Close</button>
+    </p>
+  </dialog>
+
+  <!-- TEMPLATES -->
   <template id="template-replace-pairs">
     <p class="grouped">
       <input class="find-input" placeholder="find" type="text" />
@@ -81,6 +79,14 @@
       <button type="button">x</button>
     </p>
   </template>
+  <template id="template-replace-steps">
+    <details class="replace-steps-details">
+      <summary class="step-title"></summary>
+      <div class="step-content"></div>
+    </details>
+  </template>
+
+  <!-- SCRIPTS -->
   <script src="index.js"></script>
   <script>
     if (window.matchMedia &&
