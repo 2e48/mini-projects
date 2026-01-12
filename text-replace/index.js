@@ -157,7 +157,8 @@ function escapeHtml(unsafe) {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+    .replaceAll("'", "&#039;")
+    .replaceAll("\n", "<br>");
 };
 
 function showReplacements() {
@@ -181,12 +182,22 @@ function showReplacements() {
       // before running the replacement
       originalText = originalText.replaceAll(find, replace);
 
-      // then do the html visualization of the replacement
-      // on the temp
-      text = tempText.replaceAll(
-        find,
-        `<del>${find}</del><ins>${replace}</ins>`
+      // then do the html visualization of the replacement on the temp
+      // but first we need to split the text first, to clean it
+      let textFragment = tempText.split(find);
+      textFragment = textFragment.map(fragment => escapeHtml(fragment));
+
+      // count the occurrences, ig
+      let replacementCount = textFragment.length;
+
+      // then we join it with the cleaned html thingies too
+      text = textFragment.join(
+        `<del>${escapeHtml(find)}</del><ins>${escapeHtml(replace)}</ins>`
       );
+
+      if (replacementCount > 1) { 
+        title += ` <ins>(${replacementCount - 1} changes)</ins>`;
+      }
 
       steps.push([title, text])
     }
