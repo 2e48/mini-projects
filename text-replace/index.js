@@ -4,6 +4,7 @@ const replacementPairs = document.getElementById("key-inputs");
 const newPairs = document.getElementById("new-replacement-pairs");
 const sourceText = document.getElementById("text-source");
 const runReplacements = document.getElementById("do-replacements");
+const showReplacementSteps = document.getElementById("show-replacement-steps");
 const outputText = document.getElementById("text-result");
 const copyResultButton = document.getElementById("copy-result");
 const replaceStatus = document.getElementById("replace-status");
@@ -12,6 +13,10 @@ const presetSelection = document.getElementById("preset-selection");
 const presetNew = document.getElementById("preset-new");
 const presetLoad = document.getElementById("preset-load");
 const presetSave = document.getElementById("preset-save");
+
+const replaceStepsDialog = document.getElementById("replace-steps-dialog");
+const replaceStepsContainer = document.getElementById("replacement-steps-container");
+const replaceStepsDialogClose = document.getElementById("replace-steps-dialog-close");
 
 let defaultPresets = {
   "none": [],
@@ -39,7 +44,7 @@ let defaultPresets = {
   ],
 };
 
-function getTemplate(id) { 
+function getTemplate(id) {
   const template = document.getElementById(id);
   const fragment = document.importNode(template.content, true);
 
@@ -69,7 +74,7 @@ function newReplaceGroup(initialFind = "", initialReplace = "") {
   replacementPairs.appendChild(pGroup);
 }
 
-function getReplacePairs() { 
+function getReplacePairs() {
   const pGroups = Array.from(replacementPairs.children);
 
   let replacePairs = [];
@@ -83,11 +88,11 @@ function getReplacePairs() {
 
     replacePairs.push([findString, replaceString]);
   });
-  
+
   return replacePairs;
 }
 
-function applyReplacements() { 
+function applyReplacements() {
   const pairs = getReplacePairs();
   let text = sourceText.value;
   let count = 0;
@@ -100,7 +105,7 @@ function applyReplacements() {
   });
 
   outputText.value = text;
-  
+
   if (count > 0) {
     replaceStatus.innerHTML = `Did ${count} replacements.`;
   } else {
@@ -108,7 +113,7 @@ function applyReplacements() {
   }
 }
 
-async function copyResult() { 
+async function copyResult() {
   const result = outputText?.value || null;
 
   if (!result) return;
@@ -146,6 +151,60 @@ function fillPresetSelection(presets = defaultPresets) {
   })
 }
 
+function escapeHtml(unsafe) {
+  return unsafe
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+};
+
+function showReplacements() {
+  replaceStepsDialog.showModal();
+  replaceStepsContainer.innerHTML = "";
+
+  const pairs = getReplacePairs();
+  let originalText = sourceText.value;
+
+  // [ [pair, replacementHtml], ..]
+  let steps = [];
+
+  pairs.forEach(([find, replace]) => {
+    if (find && replace) {
+      let title = `${escapeHtml(find)} -> ${escapeHtml(replace)}`;
+      let text = '';
+
+      // store the og text first
+      let tempText = originalText;
+
+      // before running the replacement
+      originalText = originalText.replaceAll(find, replace);
+
+      // then do the html visualization of the replacement
+      // on the temp
+      text = tempText.replaceAll(
+        find,
+        `<del>${find}</del><ins>${replace}</ins>`
+      );
+
+      steps.push([title, text])
+    }
+  });
+
+  steps.forEach(([title, content]) => {
+    const dGroup = getTemplate("template-replace-steps");
+
+    let summary = dGroup.querySelector(".step-title");
+    summary.innerHTML = title;
+
+    let code = dGroup.querySelector(".step-content");
+    code.innerHTML = content;
+
+    replaceStepsContainer.appendChild(dGroup);
+  });
+}
+
 newPairs.addEventListener("click", () => newReplaceGroup());
 runReplacements.addEventListener("click", applyReplacements);
 copyResultButton.addEventListener("click", copyResult);
@@ -154,4 +213,5 @@ fillPresetSelection();
 presetLoad.addEventListener("click", loadPreset);
 presetLoad.dispatchEvent(new Event("click"));
 
-// newPairs.dispatchEvent(new Event("click"));
+showReplacementSteps.addEventListener("click", () => showReplacements());
+replaceStepsDialogClose.addEventListener("click", () => replaceStepsDialog.close());
