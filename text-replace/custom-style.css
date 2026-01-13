@@ -27,6 +27,22 @@ dialog#replace-steps-dialog {
     }
 }
 
+.button {
+    padding: 1rem 1.5rem;
+}
+
+.replacement-pair[data-enabled="true"] {
+    opacity: 100%;
+}
+
+.replacement-pair[data-enabled="false"] {
+    opacity: 25%;
+}
+
+.button.outline.error {
+    border-color: var(--color-error);
+    color: var(--color-error);
+}
 
 body.dark {
     --bg-color: #000;

@@ -56,9 +56,16 @@ function getTemplate(id) {
 function newReplaceGroup(initialFind = "", initialReplace = "") {
   const pGroup = getTemplate("template-replace-pairs");
 
-  let button = pGroup.querySelector("button");
-  button.addEventListener("click", () => {
+  let deleteButton = pGroup.querySelector("button.pair-delete");
+  deleteButton.addEventListener("click", () => {
     replacementPairs.removeChild(pGroup);
+  });
+
+  let toggleButton = pGroup.querySelector("button.pair-toggle");
+  toggleButton.addEventListener("click", () => {
+    // it is a string lol, "convert" it to an actual bool first
+    const isEnabled = pGroup.dataset.enabled === "true";
+    pGroup.dataset.enabled = !isEnabled;
   });
 
   if (initialFind !== "") {
@@ -82,11 +89,12 @@ function getReplacePairs() {
   pGroups.forEach(pGroup => {
     const findInput = pGroup.querySelector('.find-input');
     const replaceInput = pGroup.querySelector('.replace-input');
+    const isEnabled = pGroup.dataset.enabled === "true";
 
     const findString = findInput?.value || null;
     const replaceString = replaceInput?.value || null;
 
-    replacePairs.push([findString, replaceString]);
+    replacePairs.push([findString, replaceString, isEnabled]);
   });
 
   return replacePairs;
@@ -97,8 +105,8 @@ function applyReplacements() {
   let text = sourceText.value;
   let count = 0;
 
-  pairs.forEach(([find, replace]) => {
-    if (find && replace) {
+  pairs.forEach(([find, replace, isEnabled]) => {
+    if (find && replace && isEnabled) {
       count += text.split(find).length - 1;
       text = text.replaceAll(find, replace);
     }
@@ -171,8 +179,8 @@ function showReplacements() {
   // [ [pair, replacementHtml], ..]
   let steps = [];
 
-  pairs.forEach(([find, replace]) => {
-    if (find && replace) {
+  pairs.forEach(([find, replace, isEnabled]) => {
+    if (find && replace && isEnabled) {
       let title = `${escapeHtml(find)} -> ${escapeHtml(replace)}`;
       let text = '';
 

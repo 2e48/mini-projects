@@ -37,7 +37,6 @@
           <div id="key-inputs"></div>
           <button id="new-replacement-pairs">Add</button>
           <button disabled id="sort-replacement-pairs">Sort</button>
-          <button disabled id="toggle-replacement-pairs">Toggle</button>
         </fieldset>
       </section>
       <section id="input">
@@ -73,10 +72,11 @@
 
   <!-- TEMPLATES -->
   <template id="template-replace-pairs">
-    <p class="grouped">
+    <p class="replacement-pair grouped" data-enabled="true">
+      <button type="button" class="pair-toggle button">👁️</button>
       <input class="find-input" placeholder="find" type="text" />
       <input class="replace-input" placeholder="replace" type="text" />
-      <button type="button">x</button>
+      <button type="button" class="pair-delete button outline error">🗑️</button>
     </p>
   </template>
   <template id="template-replace-steps">
