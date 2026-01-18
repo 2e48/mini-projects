@@ -167,7 +167,7 @@ function escapeHtml(unsafe) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;")
     .replaceAll("\n", "<br>");
-};
+}
 
 function showReplacements() {
   replaceStepsDialog.showModal();
@@ -222,6 +222,19 @@ function showReplacements() {
 
     replaceStepsContainer.appendChild(dGroup);
   });
+}
+
+function toggleToggles(elem) {
+  const target = elem.dataset.target;
+  const toggled = elem.dataset.toggled === "true";
+
+  const targets = document.querySelectorAll(`.replacement-pair .${target}`);
+
+  for (let button of targets) {
+    button.dataset.visible = !toggled;
+  }
+
+  elem.dataset.toggled = !toggled;
 }
 
 newPairs.addEventListener("click", () => newReplaceGroup());

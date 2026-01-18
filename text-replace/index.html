@@ -36,6 +36,9 @@
           <legend>Key -> replacement</legend>
           <div id="key-inputs"></div>
           <button id="new-replacement-pairs">Add</button>
+          <button id="toggle-toggle" data-toggled="false" data-target="pair-toggle" onclick="toggleToggles(this)">Toggle</button>
+          <button id="toggle-delete" data-toggled="false" data-target="pair-delete" onclick="toggleToggles(this)">Delete</button>
+          <button id="toggle-swap" data-toggled="false" data-target="pair-swap" onclick="toggleToggles(this)">Swap</button>
           <button disabled id="sort-replacement-pairs">Sort</button>
         </fieldset>
       </section>
@@ -73,10 +76,10 @@
   <!-- TEMPLATES -->
   <template id="template-replace-pairs">
     <p class="replacement-pair grouped" data-enabled="true">
-      <button type="button" class="pair-toggle button">👁️</button>
+      <button type="button" class="pair-toggle button" data-visible="false">👁️</button>
       <input class="find-input" placeholder="find" type="text" />
       <input class="replace-input" placeholder="replace" type="text" />
-      <button type="button" class="pair-delete button outline error">🗑️</button>
+      <button type="button" class="pair-delete button outline error" data-visible="false">🗑️</button>
     </p>
   </template>
   <template id="template-replace-steps">

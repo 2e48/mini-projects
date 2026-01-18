@@ -27,6 +27,15 @@ dialog#replace-steps-dialog {
     }
 }
 
+button[data-visible="false"] {
+    display: none;
+}
+
+button[data-toggled="false"] {
+    opacity: 75%;
+    color: red !important;
+}
+
 .button {
     padding: 1rem 1.5rem;
 }
