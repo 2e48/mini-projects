@@ -97,7 +97,6 @@ function newReplaceGroup(initialFind = "", initialReplace = "") {
   sortUpButton.dataset.visible = sortVisible;
   sortUpButton.addEventListener("click", () => { 
     const prevSibling = pGroup.previousElementSibling;
-
     if (prevSibling) {
       replacementPairs.insertBefore(pGroup, prevSibling);
     }

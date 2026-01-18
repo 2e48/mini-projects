@@ -36,10 +36,6 @@ button[data-toggled="false"] {
     color: red !important;
 }
 
-.button {
-    padding: 1rem 1.5rem;
-}
-
 .replacement-pair[data-enabled="true"] {
     opacity: 100%;
 }
@@ -51,6 +47,23 @@ button[data-toggled="false"] {
 .button.outline.error {
     border-color: var(--color-error);
     color: var(--color-error);
+}
+
+.replacement-pair.grouped .button{
+    margin-left: unset;
+    padding: 1rem 1rem;
+}
+
+.replacement-pair.grouped > :not(:last-child) {
+    margin-right: 0.5rem;
+}
+
+.replacement-pair.grouped:first-child .pair-direction-up {
+    visibility: hidden;
+}
+
+.replacement-pair.grouped:last-child .pair-direction-down {
+    visibility: hidden;
 }
 
 body.dark {
