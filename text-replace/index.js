@@ -18,6 +18,11 @@ const replaceStepsDialog = document.getElementById("replace-steps-dialog");
 const replaceStepsContainer = document.getElementById("replacement-steps-container");
 const replaceStepsDialogClose = document.getElementById("replace-steps-dialog-close");
 
+const toggleToggle = document.getElementById("toggle-toggle");
+const toggleDelete = document.getElementById("toggle-delete");
+const toggleSwap = document.getElementById("toggle-swap");
+const toggleSort = document.getElementById("toggle-sort");
+
 let defaultPresets = {
   "none": [],
   "single-to-double-brackets": [
@@ -56,12 +61,19 @@ function getTemplate(id) {
 function newReplaceGroup(initialFind = "", initialReplace = "") {
   const pGroup = getTemplate("template-replace-pairs");
 
+  const toggleVisible = toggleToggle.dataset.toggled === "true";
+  const deleteVisible = toggleDelete.dataset.toggled === "true";
+  const swapVisible = toggleSwap.dataset.toggled === "true";
+  const sortVisible = toggleSort.dataset.toggled === "true";
+
   let deleteButton = pGroup.querySelector("button.pair-delete");
+  deleteButton.dataset.visible = deleteVisible;
   deleteButton.addEventListener("click", () => {
     replacementPairs.removeChild(pGroup);
   });
 
   let toggleButton = pGroup.querySelector("button.pair-toggle");
+  toggleButton.dataset.visible = toggleVisible;
   toggleButton.addEventListener("click", () => {
     // it is a string lol, "convert" it to an actual bool first
     const isEnabled = pGroup.dataset.enabled === "true";
@@ -69,6 +81,7 @@ function newReplaceGroup(initialFind = "", initialReplace = "") {
   });
 
   let swapButton = pGroup.querySelector("button.pair-swap");
+  swapButton.dataset.visible = swapVisible;
   swapButton.addEventListener("click", () => {
     let find = pGroup.querySelector(".find-input");
     let replace = pGroup.querySelector(".replace-input");
@@ -78,6 +91,25 @@ function newReplaceGroup(initialFind = "", initialReplace = "") {
 
     find.value = rValue;
     replace.value = fValue;
+  });
+
+  let sortUpButton = pGroup.querySelector("button.pair-sort.pair-direction-up");
+  sortUpButton.dataset.visible = sortVisible;
+  sortUpButton.addEventListener("click", () => { 
+    const prevSibling = pGroup.previousElementSibling;
+
+    if (prevSibling) {
+      replacementPairs.insertBefore(pGroup, prevSibling);
+    }
+  });
+  
+  let sortDownButton = pGroup.querySelector("button.pair-sort.pair-direction-down");
+  sortDownButton.dataset.visible = sortVisible;
+  sortDownButton.addEventListener("click", () => {
+    const nextSibling = pGroup.nextElementSibling;
+    if (nextSibling) {
+      replacementPairs.insertBefore(pGroup, nextSibling.nextElementSibling); // the fuck
+    }
   });
 
   if (initialFind !== "") {
