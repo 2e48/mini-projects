@@ -68,6 +68,18 @@ function newReplaceGroup(initialFind = "", initialReplace = "") {
     pGroup.dataset.enabled = !isEnabled;
   });
 
+  let swapButton = pGroup.querySelector("button.pair-swap");
+  swapButton.addEventListener("click", () => {
+    let find = pGroup.querySelector(".find-input");
+    let replace = pGroup.querySelector(".replace-input");
+
+    let fValue = find.value;
+    let rValue = replace.value;
+
+    find.value = rValue;
+    replace.value = fValue;
+  });
+
   if (initialFind !== "") {
     let findInput = pGroup.querySelector(".find-input");
     findInput.value = initialFind;
