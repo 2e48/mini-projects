@@ -13,6 +13,7 @@ const presetSelection = document.getElementById("preset-selection");
 const presetNew = document.getElementById("preset-new");
 const presetLoad = document.getElementById("preset-load");
 const presetSave = document.getElementById("preset-save");
+const presetAppend = document.getElementById("preset-append");
 
 const replaceStepsDialog = document.getElementById("replace-steps-dialog");
 const replaceStepsContainer = document.getElementById("replacement-steps-container");
@@ -196,6 +197,22 @@ function loadPreset() {
   });
 }
 
+function appendPreset() {
+  const selectedPreset = presetSelection.value;
+  const pairsFromPreset = defaultPresets[selectedPreset];
+
+  if (selectedPreset === "none") {
+    return;
+  }
+
+  if (!pairsFromPreset) return;
+  if (pairsFromPreset.length < 1) return;
+
+  pairsFromPreset.forEach(([find, replace]) => {
+    newReplaceGroup(find, replace);
+  });
+}
+
 function fillPresetSelection(presets = defaultPresets) {
   Object.keys(presets).forEach(item => {
     presetSelection.innerHTML += `<option value="${item}">${item}</option>`
@@ -287,6 +304,7 @@ copyResultButton.addEventListener("click", copyResult);
 fillPresetSelection();
 presetLoad.addEventListener("click", loadPreset);
 presetLoad.dispatchEvent(new Event("click"));
+presetAppend.addEventListener("click", appendPreset);
 
 showReplacementSteps.addEventListener("click", () => showReplacements());
 replaceStepsDialogClose.addEventListener("click", () => replaceStepsDialog.close());
