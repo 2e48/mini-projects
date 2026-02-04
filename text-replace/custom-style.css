@@ -58,12 +58,9 @@ button[data-toggled="false"] {
     margin-right: 0.5rem;
 }
 
-.replacement-pair.grouped:first-child .pair-direction-up {
-    visibility: hidden;
-}
-
+.replacement-pair.grouped:first-child .pair-direction-up,
 .replacement-pair.grouped:last-child .pair-direction-down {
-    visibility: hidden;
+    opacity: 0.25;
 }
 
 body.dark {
