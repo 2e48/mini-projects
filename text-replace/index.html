@@ -37,10 +37,30 @@
           <legend>Key -> replacement</legend>
           <div id="key-inputs"></div>
           <button id="new-replacement-pairs">Add</button>
-          <button id="toggle-toggle" data-toggled="false" data-target="pair-toggle" onclick="toggleToggles(this)">Toggle</button>
-          <button id="toggle-sort" data-toggled="false" data-target="pair-sort" onclick="toggleToggles(this)">Sort</button>
-          <button id="toggle-swap" data-toggled="false" data-target="pair-swap" onclick="toggleToggles(this)">Swap</button>
-          <button id="toggle-delete" data-toggled="false" data-target="pair-delete" onclick="toggleToggles(this)">Delete</button>
+          <button data-target="pair-toggle"
+                  data-toggled="false"
+                  id="toggle-toggle"
+                  onclick="toggleToggles(this)">
+            Toggle
+          </button>
+          <button data-target="pair-sort"
+                  data-toggled="false"
+                  id="toggle-sort"
+                  onclick="toggleToggles(this)">
+            Sort
+          </button>
+          <button data-target="pair-swap"
+                  data-toggled="false"
+                  id="toggle-swap"
+                  onclick="toggleToggles(this)">
+            Swap
+          </button>
+          <button data-target="pair-delete"
+                  data-toggled="false"
+                  id="toggle-delete"
+                  onclick="toggleToggles(this)">
+            Delete
+          </button>
         </fieldset>
       </section>
       <section id="input">
@@ -77,13 +97,19 @@
   <!-- TEMPLATES -->
   <template id="template-replace-pairs">
     <p class="replacement-pair grouped" data-enabled="true">
-      <button type="button" class="pair-toggle button" data-visible="false">👁️</button>
-      <button type="button" class="pair-sort pair-direction-up button" data-visible="false">⬆️</button>
-      <button type="button" class="pair-sort pair-direction-down button" data-visible="false">⬇️</button>
+      <button class="pair-toggle button" data-visible="false" type="button">👁️</button>
+      <button class="pair-sort pair-direction-up button" data-visible="false" type="button">
+        ⬆️
+      </button>
+      <button class="pair-sort pair-direction-down button" data-visible="false" type="button">
+        ⬇️
+      </button>
       <input class="find-input" placeholder="find" type="text" />
-      <button type="button" class="pair-swap button" data-visible="false">🔁</button>
+      <button class="pair-swap button" data-visible="false" type="button">🔁</button>
       <input class="replace-input" placeholder="replace" type="text" />
-      <button type="button" class="pair-delete button outline error" data-visible="false">🗑️</button>
+      <button class="pair-delete button outline error" data-visible="false" type="button">
+        🗑️
+      </button>
     </p>
   </template>
   <template id="template-replace-steps">
