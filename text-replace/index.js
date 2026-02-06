@@ -96,13 +96,13 @@ function newReplaceGroup(initialFind = "", initialReplace = "") {
 
   let sortUpButton = pGroup.querySelector("button.pair-sort.pair-direction-up");
   sortUpButton.dataset.visible = sortVisible;
-  sortUpButton.addEventListener("click", () => { 
+  sortUpButton.addEventListener("click", () => {
     const prevSibling = pGroup.previousElementSibling;
     if (prevSibling) {
       replacementPairs.insertBefore(pGroup, prevSibling);
     }
   });
-  
+
   let sortDownButton = pGroup.querySelector("button.pair-sort.pair-direction-down");
   sortDownButton.dataset.visible = sortVisible;
   sortDownButton.addEventListener("click", () => {
@@ -149,7 +149,7 @@ function applyReplacements() {
   let text = sourceText.value;
   let count = 0;
 
-  function classic(f, r) { 
+  function classic(f, r) {
     count += text.split(f).length - 1;
     text = text.replaceAll(f, r);
   }
@@ -171,7 +171,7 @@ function applyReplacements() {
         const re = new RegExp(pattern, flags);
         const matches = text.match(re);
 
-        if (matches) { 
+        if (matches) {
           count += matches.length;
           text = text.replace(re, replace);
         }
@@ -268,14 +268,23 @@ function showReplacements() {
   let steps = [];
 
   pairs.forEach(([find, replace, isEnabled]) => {
-    if (find && replace && isEnabled) {
-      let title = `${escapeHtml(find)} -> ${escapeHtml(replace)}`;
-      let text = '';
+    if (!find || !replace || !isEnabled) return;
 
-      // store the og text first
-      let tempText = originalText;
+    let title = `${escapeHtml(find)} -> ${escapeHtml(replace)}`;
+    let textForDisplay = '';
+    let replacementCount = 0;
 
-      // before running the replacement
+    // store the og text first
+    let tempText = originalText;
+
+    // checker for find if they're regex
+    const isRegexMatch = find.match(/^\/(.+)\/([gimyus]*)$/);
+    console.log(isRegexMatch);
+
+    // old logic "refactored" into a helper function
+    // as this gets reused for like 2 times.
+    function classic(find, replace) {
+      // if old logic, then do changes to the og text
       originalText = originalText.replaceAll(find, replace);
 
       // then do the html visualization of the replacement on the temp
@@ -284,19 +293,74 @@ function showReplacements() {
       textFragment = textFragment.map(fragment => escapeHtml(fragment));
 
       // count the occurrences, ig
-      let replacementCount = textFragment.length;
+      // minus one since it still returns an array of 1 even if nothing matches
+      replacementCount = textFragment.length - 1;
 
       // then we join it with the cleaned html thingies too
-      text = textFragment.join(
+      textForDisplay = textFragment.join(
         `<del>${escapeHtml(find)}</del><ins>${escapeHtml(replace)}</ins>`
       );
-
-      if (replacementCount > 1) { 
-        title += ` <ins>(${replacementCount - 1} changes)</ins>`;
-      }
-
-      steps.push([title, text])
     }
+
+    if (isRegexMatch) {
+      // new logic for regex
+      // mostly copy paste from applyReplacements()
+      try {
+        const pattern = isRegexMatch[1]; // (.+)
+        const flags = isRegexMatch[2] || ""; // ([gimyus]*)
+        const re = new RegExp(pattern, flags);
+
+        // do the regex replacements
+        originalText = originalText.replace(re, replace);
+
+        // then to avoid some "pollution"
+        // we will substitute these funky shit for now
+        // instead of the actual html tags
+        const DEL_S = "!!___DELS___!!";
+        const DEL_E = "!!___DELE___!!";
+        const INS_S = "!!___INSS___!!";
+        const INS_E = "!!___INSE___!!";
+
+        // then do the visualization regex logic
+        textForDisplay = tempText.replace(re, match => {
+          replacementCount += 1;
+
+          // this will handle if the regex has grouping: /(things)/
+          // and if the replace uses $n notation: $1 $2, etc
+          const singleRe = new RegExp(re, flags.replace("g", ""));
+          const processedReplace = match.replace(singleRe, replace)
+
+          // we will use these unusual html tags
+          // so we can replace them later...
+          return `${DEL_S}${match}${DEL_E}${INS_S}${processedReplace}${INS_E}`;
+        });
+
+        // after which, we will now THEN escape the html
+        textForDisplay = escapeHtml(textForDisplay);
+
+        // before doing these "unreplacements" so we can render things
+        // back to html
+        textForDisplay = textForDisplay
+          .replaceAll(DEL_S, "<del>")   // remember the DEL_S?
+          .replaceAll(DEL_E, "</del>")
+          .replaceAll(INS_S, "<ins>")
+          .replaceAll(INS_E, "</ins>");
+      } catch (error) {
+        console.error("Steps for RegEx Error:", error);
+        
+        // just use the fallback if shit hits the fan.
+        classic(find, replace);
+      }
+    } else {
+      // old logic here
+      classic(find, replace);
+    }
+
+    if (replacementCount > 0) {
+      title += ` <ins>(${replacementCount} changes)</ins>`;
+    }
+
+    steps.push([title, textForDisplay]);
   });
 
   steps.forEach(([title, content]) => {
