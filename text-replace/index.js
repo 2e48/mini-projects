@@ -149,10 +149,38 @@ function applyReplacements() {
   let text = sourceText.value;
   let count = 0;
 
+  function classic(f, r) { 
+    count += text.split(f).length - 1;
+    text = text.replaceAll(f, r);
+  }
+
   pairs.forEach(([find, replace, isEnabled]) => {
-    if (find && replace && isEnabled) {
-      count += text.split(find).length - 1;
-      text = text.replaceAll(find, replace);
+    if (!find || !replace || !isEnabled) return;
+
+    // check if the string is regex with optional flags
+    // must start AND end with a slash like /this/ (and some flags)
+    const isRegexMatch = find.match(/^\/(.+)\/([gimyus]*)$/);
+
+    // regex will require a 'g' flag to do global search
+    // might as well give it an option :)
+    if (isRegexMatch) {
+      try {
+        const pattern = isRegexMatch[1]; // (.+)
+        const flags = isRegexMatch[2] || ""; // ([gimyus]*)
+
+        const re = new RegExp(pattern, flags);
+        const matches = text.match(re);
+
+        if (matches) { 
+          count += matches.length;
+          text = text.replace(re, replace);
+        }
+      } catch (error) {
+        console.error("RegEx Error:", error);
+        classic(find, replace);
+      }
+    } else {
+      classic(find, replace);
     }
   });
 
