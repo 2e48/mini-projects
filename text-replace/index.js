@@ -34,6 +34,9 @@ let defaultPresets = {
     ["{<char>}", "{{char}}"],
     ["<char>", "{{char}}"],
   ],
+  "regex-single-to-double-brackets": [
+    ["/(?<!{)[{<](user|char)[>}](?!})/gi", "{{$1}}"]
+  ],
   "jai-pronouns-to-st": [
     ["{{sub}}", "{{pronoun.subjective}}"],
     ["{{obj}}", "{{pronoun.objective}}"],
