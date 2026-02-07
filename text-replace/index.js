@@ -106,6 +106,20 @@ function replacementPairClick(elem) {
     }
     return;
   }
+
+  if (button.classList.contains("pair-regex")) {
+    const isRegex = pGroup.dataset.regexMode === "true";
+    const find = pGroup.querySelector(".find-input");
+    pGroup.dataset.regexMode = !isRegex;
+
+    // logic is opposite since we are toggling.
+    if (isRegex) {
+      find.placeholder = "find";
+    } else {
+      find.placeholder = "/find/g";
+    }
+    return;
+  }
   
   if (button.classList.contains("pair-swap")) {
     let find = pGroup.querySelector(".find-input");
@@ -135,11 +149,12 @@ function getReplacePairs() {
     const findInput = pGroup.querySelector('.find-input');
     const replaceInput = pGroup.querySelector('.replace-input');
     const isEnabled = pGroup.dataset.enabled === "true";
+    const isRegex = pGroup.dataset.regexMode === "true";
 
     const findString = findInput?.value || null;
     const replaceString = replaceInput?.value || null;
 
-    replacePairs.push([findString, replaceString, isEnabled]);
+    replacePairs.push([findString, replaceString, isEnabled, isRegex]);
   });
 
   return replacePairs;
@@ -155,7 +170,7 @@ function applyReplacements() {
     text = text.replaceAll(f, r);
   }
 
-  pairs.forEach(([find, replace, isEnabled]) => {
+  pairs.forEach(([find, replace, isEnabled, isRegex]) => {
     if (!find || !replace || !isEnabled) return;
 
     // check if the string is regex with optional flags
@@ -164,7 +179,7 @@ function applyReplacements() {
 
     // regex will require a 'g' flag to do global search
     // might as well give it an option :)
-    if (isRegexMatch) {
+    if (isRegexMatch && isRegex) {
       try {
         const pattern = isRegexMatch[1]; // (.+)
         const flags = isRegexMatch[2] || ""; // ([gimyus]*)
@@ -268,7 +283,7 @@ function showReplacements() {
   // [ [pair, replacementHtml], ..]
   let steps = [];
 
-  pairs.forEach(([find, replace, isEnabled]) => {
+  pairs.forEach(([find, replace, isEnabled, isRegex]) => {
     if (!find || !replace || !isEnabled) return;
 
     let title = `${escapeHtml(find)} -> ${escapeHtml(replace)}`;
@@ -280,7 +295,6 @@ function showReplacements() {
 
     // checker for find if they're regex
     const isRegexMatch = find.match(/^\/(.+)\/([gimyus]*)$/);
-    console.log(isRegexMatch);
 
     // old logic "refactored" into a helper function
     // as this gets reused for like 2 times.
@@ -303,7 +317,7 @@ function showReplacements() {
       );
     }
 
-    if (isRegexMatch) {
+    if (isRegexMatch && isRegex) {
       // new logic for regex
       // mostly copy paste from applyReplacements()
       try {

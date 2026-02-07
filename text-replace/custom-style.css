@@ -40,6 +40,15 @@ button[data-toggled="false"] {
     opacity: 25%;
 }
 
+.replacement-pair[data-regex-mode="true"] {
+    .find-input,
+    .replace-input,
+    .pair-regex {
+        outline: 1px solid cyan;
+        color: cyan;
+    }
+}
+
 #key-inputs button {
     display: none;
 }
@@ -47,7 +56,8 @@ button[data-toggled="false"] {
 #key-inputs.show-pair-toggle .pair-toggle,
 #key-inputs.show-pair-sort .pair-sort,
 #key-inputs.show-pair-swap .pair-swap,
-#key-inputs.show-pair-delete .pair-delete {
+#key-inputs.show-pair-delete .pair-delete,
+#key-inputs.show-pair-regex .pair-regex {
     display: unset;
 }
 

@@ -49,6 +49,12 @@
                   onclick="toggleToggles(this)">
             Sort
           </button>
+          <button data-target="pair-regex"
+                  data-toggled="false"
+                  id="toggle-sort"
+                  onclick="toggleToggles(this)">
+            RegExp
+          </button>
           <button data-target="pair-swap"
                   data-toggled="false"
                   id="toggle-swap"
@@ -104,8 +110,9 @@
       <button class="pair-sort pair-direction-down button" type="button">
         ⬇️
       </button>
+      <button class="pair-regex button" type="button">.*</button>
       <input class="find-input" placeholder="find" type="text" />
-      <button class="pair-swap button"  type="button">🔁</button>
+      <button class="pair-swap button" type="button">🔁</button>
       <input class="replace-input" placeholder="replace" type="text" />
       <button class="pair-delete button outline error" type="button">
         🗑️
