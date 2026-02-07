@@ -40,12 +40,15 @@ button[data-toggled="false"] {
     opacity: 25%;
 }
 
-#key-inputs.hide-pair-toggle .pair-toggle,
-#key-inputs.hide-pair-sort .pair-sort,
-#key-inputs.hide-pair-swap .pair-swap,
-#key-inputs.hide-pair-delete .pair-delete
-{
+#key-inputs button {
     display: none;
+}
+
+#key-inputs.show-pair-toggle .pair-toggle,
+#key-inputs.show-pair-sort .pair-sort,
+#key-inputs.show-pair-swap .pair-swap,
+#key-inputs.show-pair-delete .pair-delete {
+    display: unset;
 }
 
 .button.outline.error {

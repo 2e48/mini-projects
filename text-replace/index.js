@@ -382,9 +382,9 @@ function toggleToggles(elem) {
   const isToggled = elem.dataset.toggled === "true";
 
   if (isToggled) {
-    replacementPairs.classList.add(`hide-${targetToggle}`);
+    replacementPairs.classList.remove(`show-${targetToggle}`);
   } else {
-    replacementPairs.classList.remove(`hide-${targetToggle}`);
+    replacementPairs.classList.add(`show-${targetToggle}`);
   }
 
   elem.dataset.toggled = !isToggled;
