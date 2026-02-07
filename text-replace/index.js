@@ -65,19 +65,12 @@ function getTemplate(id) {
 function newReplaceGroup(initialFind = "", initialReplace = "") {
   const pGroup = getTemplate("template-replace-pairs");
 
-  const toggleVisible = toggleToggle.dataset.toggled === "true";
-  const deleteVisible = toggleDelete.dataset.toggled === "true";
-  const swapVisible = toggleSwap.dataset.toggled === "true";
-  const sortVisible = toggleSort.dataset.toggled === "true";
-
   let deleteButton = pGroup.querySelector("button.pair-delete");
-  deleteButton.dataset.visible = deleteVisible;
   deleteButton.addEventListener("click", () => {
     replacementPairs.removeChild(pGroup);
   });
 
   let toggleButton = pGroup.querySelector("button.pair-toggle");
-  toggleButton.dataset.visible = toggleVisible;
   toggleButton.addEventListener("click", () => {
     // it is a string lol, "convert" it to an actual bool first
     const isEnabled = pGroup.dataset.enabled === "true";
@@ -85,7 +78,6 @@ function newReplaceGroup(initialFind = "", initialReplace = "") {
   });
 
   let swapButton = pGroup.querySelector("button.pair-swap");
-  swapButton.dataset.visible = swapVisible;
   swapButton.addEventListener("click", () => {
     let find = pGroup.querySelector(".find-input");
     let replace = pGroup.querySelector(".replace-input");
@@ -98,7 +90,6 @@ function newReplaceGroup(initialFind = "", initialReplace = "") {
   });
 
   let sortUpButton = pGroup.querySelector("button.pair-sort.pair-direction-up");
-  sortUpButton.dataset.visible = sortVisible;
   sortUpButton.addEventListener("click", () => {
     const prevSibling = pGroup.previousElementSibling;
     if (prevSibling) {
@@ -107,7 +98,6 @@ function newReplaceGroup(initialFind = "", initialReplace = "") {
   });
 
   let sortDownButton = pGroup.querySelector("button.pair-sort.pair-direction-down");
-  sortDownButton.dataset.visible = sortVisible;
   sortDownButton.addEventListener("click", () => {
     const nextSibling = pGroup.nextElementSibling;
     if (nextSibling) {
@@ -380,16 +370,16 @@ function showReplacements() {
 }
 
 function toggleToggles(elem) {
-  const target = elem.dataset.target;
-  const toggled = elem.dataset.toggled === "true";
+  const targetToggle = elem.dataset.target;
+  const isToggled = elem.dataset.toggled === "true";
 
-  const targets = document.querySelectorAll(`.replacement-pair .${target}`);
-
-  for (let button of targets) {
-    button.dataset.visible = !toggled;
+  if (isToggled) {
+    replacementPairs.classList.add(`hide-${targetToggle}`);
+  } else {
+    replacementPairs.classList.remove(`hide-${targetToggle}`);
   }
 
-  elem.dataset.toggled = !toggled;
+  elem.dataset.toggled = !isToggled;
 }
 
 newPairs.addEventListener("click", () => newReplaceGroup());
