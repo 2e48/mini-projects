@@ -65,46 +65,6 @@ function getTemplate(id) {
 function newReplaceGroup(initialFind = "", initialReplace = "") {
   const pGroup = getTemplate("template-replace-pairs");
 
-  let deleteButton = pGroup.querySelector("button.pair-delete");
-  deleteButton.addEventListener("click", () => {
-    replacementPairs.removeChild(pGroup);
-  });
-
-  let toggleButton = pGroup.querySelector("button.pair-toggle");
-  toggleButton.addEventListener("click", () => {
-    // it is a string lol, "convert" it to an actual bool first
-    const isEnabled = pGroup.dataset.enabled === "true";
-    pGroup.dataset.enabled = !isEnabled;
-  });
-
-  let swapButton = pGroup.querySelector("button.pair-swap");
-  swapButton.addEventListener("click", () => {
-    let find = pGroup.querySelector(".find-input");
-    let replace = pGroup.querySelector(".replace-input");
-
-    let fValue = find.value;
-    let rValue = replace.value;
-
-    find.value = rValue;
-    replace.value = fValue;
-  });
-
-  let sortUpButton = pGroup.querySelector("button.pair-sort.pair-direction-up");
-  sortUpButton.addEventListener("click", () => {
-    const prevSibling = pGroup.previousElementSibling;
-    if (prevSibling) {
-      replacementPairs.insertBefore(pGroup, prevSibling);
-    }
-  });
-
-  let sortDownButton = pGroup.querySelector("button.pair-sort.pair-direction-down");
-  sortDownButton.addEventListener("click", () => {
-    const nextSibling = pGroup.nextElementSibling;
-    if (nextSibling) {
-      replacementPairs.insertBefore(pGroup, nextSibling.nextElementSibling); // the fuck
-    }
-  });
-
   if (initialFind !== "") {
     let findInput = pGroup.querySelector(".find-input");
     findInput.value = initialFind;
@@ -116,6 +76,54 @@ function newReplaceGroup(initialFind = "", initialReplace = "") {
   }
 
   replacementPairs.appendChild(pGroup);
+}
+
+function replacementPairClick(elem) {
+  const button = elem.target.closest("button");
+  if (!button) return;
+
+  const pGroup = button.closest(".replacement-pair");
+  if (!pGroup) return;
+
+  if (button.classList.contains("pair-toggle")) {
+    const isEnabled = pGroup.dataset.enabled === "true";
+    pGroup.dataset.enabled = !isEnabled;
+    return;
+  }
+  
+  if (button.classList.contains("pair-direction-up")) {
+    const prevSibling = pGroup.previousElementSibling;
+    if (prevSibling) {
+      replacementPairs.insertBefore(pGroup, prevSibling);
+    }
+    return;
+  }
+  
+  if (button.classList.contains("pair-direction-down")) {
+    const nextSibling = pGroup.nextElementSibling;
+    if (nextSibling) {
+      replacementPairs.insertBefore(pGroup, nextSibling.nextElementSibling); // the fuck
+    }
+    return;
+  }
+  
+  if (button.classList.contains("pair-swap")) {
+    let find = pGroup.querySelector(".find-input");
+    let replace = pGroup.querySelector(".replace-input");
+
+    let fValue = find.value;
+    let rValue = replace.value;
+
+    find.value = rValue;
+    replace.value = fValue;
+
+    return;
+  }
+  
+  if (button.classList.contains("pair-delete")) {
+    replacementPairs.removeChild(pGroup);
+    return;
+  }
 }
 
 function getReplacePairs() {
@@ -390,6 +398,8 @@ fillPresetSelection();
 presetLoad.addEventListener("click", loadPreset);
 presetLoad.dispatchEvent(new Event("click"));
 presetAppend.addEventListener("click", appendPreset);
+
+replacementPairs.addEventListener("click", (e) => replacementPairClick(e));
 
 showReplacementSteps.addEventListener("click", () => showReplacements());
 replaceStepsDialogClose.addEventListener("click", () => replaceStepsDialog.close());
