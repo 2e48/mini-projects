@@ -35,38 +35,42 @@
       <section id="keys">
         <fieldset>
           <legend>Key -> replacement</legend>
+          <p class="grouped">
+            <button data-target="pair-toggle"
+                    data-toggled="false"
+                    id="toggle-toggle"
+                    onclick="toggleToggles(this)">
+              Toggle
+            </button>
+            <button data-target="pair-sort"
+                    data-toggled="false"
+                    id="toggle-sort"
+                    onclick="toggleToggles(this)">
+              Sort
+            </button>
+            <button data-target="pair-regex"
+                    data-toggled="false"
+                    id="toggle-sort"
+                    onclick="toggleToggles(this)">
+              RegExp
+            </button>
+            <button data-target="pair-swap"
+                    data-toggled="false"
+                    id="toggle-swap"
+                    onclick="toggleToggles(this)">
+              Swap
+            </button>
+          </p>
           <div id="key-inputs"></div>
-          <button id="new-replacement-pairs">Add</button>
-          <button data-target="pair-toggle"
-                  data-toggled="false"
-                  id="toggle-toggle"
-                  onclick="toggleToggles(this)">
-            Toggle
-          </button>
-          <button data-target="pair-sort"
-                  data-toggled="false"
-                  id="toggle-sort"
-                  onclick="toggleToggles(this)">
-            Sort
-          </button>
-          <button data-target="pair-regex"
-                  data-toggled="false"
-                  id="toggle-sort"
-                  onclick="toggleToggles(this)">
-            RegExp
-          </button>
-          <button data-target="pair-swap"
-                  data-toggled="false"
-                  id="toggle-swap"
-                  onclick="toggleToggles(this)">
-            Swap
-          </button>
-          <button data-target="pair-delete"
-                  data-toggled="false"
-                  id="toggle-delete"
-                  onclick="toggleToggles(this)">
-            Delete
-          </button>
+          <p class="grouped">
+            <button id="new-replacement-pairs">Add</button>
+            <button data-target="pair-delete"
+                    data-toggled="false"
+                    id="toggle-delete"
+                    onclick="toggleToggles(this)">
+              Delete
+            </button>
+          </p>
         </fieldset>
       </section>
       <section id="input">
