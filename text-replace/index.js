@@ -1,5 +1,7 @@
 "use strict";
 
+const SESSION_SAVE_KEY = "text-replace-session";
+
 const replacementPairs = document.getElementById("key-inputs");
 const newPairs = document.getElementById("new-replacement-pairs");
 const sourceText = document.getElementById("text-source");
@@ -27,31 +29,48 @@ const toggleSort = document.getElementById("toggle-sort");
 let defaultPresets = {
   "none": [],
   "single-to-double-brackets": [
-    ["{user}", "<user>"],
-    ["{<user>}", "{{user}}"],
-    ["<user>", "{{user}}"],
-    ["{char}", "<char>"],
-    ["{<char>}", "{{char}}"],
-    ["<char>", "{{char}}"],
+    ["{user}", "<user>", true, false],
+    ["{<user>}", "{{user}}", true, false],
+    ["<user>", "{{user}}", true, false],
+    ["{char}", "<char>", true, false],
+    ["{<char>}", "{{char}}", true, false],
+    ["<char>", "{{char}}", true, false],
   ],
   "regex-single-to-double-brackets": [
-    ["/(?<!{)[{<](user|char)[>}](?!})/gi", "{{$1}}"]
+    ["/(?<!{)[{<](user|char)[>}](?!})/gi", "{{$1}}", true, true]
   ],
   "jai-pronouns-to-st": [
-    ["{{sub}}", "{{pronoun.subjective}}"],
-    ["{{obj}}", "{{pronoun.objective}}"],
-    ["{{poss}}", "{{pronoun.pos_det}}"],
-    ["{{poss_p}}", "{{pronoun.pos_pro}}"],
-    ["{{ref}}", "{{pronoun.reflexive}}"],
+    ["{{sub}}", "{{pronoun.subjective}}", true, false],
+    ["{{obj}}", "{{pronoun.objective}}", true, false],
+    ["{{poss}}", "{{pronoun.pos_det}}", true, false],
+    ["{{poss_p}}", "{{pronoun.pos_pro}}", true, false],
+    ["{{ref}}", "{{pronoun.reflexive}}", true, false],
   ],
   "st-pronouns-to-jai": [
-    ["{{pronoun.subjective}}", "{{sub}}"],
-    ["{{pronoun.objective}}", "{{obj}}"],
-    ["{{pronoun.pos_det}}", "{{poss}}"],
-    ["{{pronoun.pos_pro}}", "{{poss_p}}"],
-    ["{{pronoun.reflexive}}", "{{ref}}"],
+    ["{{pronoun.subjective}}", "{{sub}}", true, false],
+    ["{{pronoun.objective}}", "{{obj}}", true, false],
+    ["{{pronoun.pos_det}}", "{{poss}}", true, false],
+    ["{{pronoun.pos_pro}}", "{{poss_p}}", true, false],
+    ["{{pronoun.reflexive}}", "{{ref}}", true, false],
   ],
 };
+
+async function loadJson(path) {
+  try {
+    const response = await fetch(path);
+    if (!response.ok) {
+      console.warn("Unable to load .json: " + path);
+      return false;
+    }
+
+    const result = await response.json()
+
+    return result;
+  } catch (error) {
+    console.error(error.message);
+    return false
+  }
+}
 
 function getTemplate(id) {
   const template = document.getElementById(id);
@@ -62,7 +81,7 @@ function getTemplate(id) {
   return fragment.firstElementChild;
 }
 
-function newReplaceGroup(initialFind = "", initialReplace = "") {
+function newReplaceGroup(initialFind = "", initialReplace = "", isEnabled = true, isRegex = false) {
   const pGroup = getTemplate("template-replace-pairs");
 
   if (initialFind !== "") {
@@ -73,6 +92,16 @@ function newReplaceGroup(initialFind = "", initialReplace = "") {
   if (initialReplace !== "") {
     let replaceInput = pGroup.querySelector(".replace-input");
     replaceInput.value = initialReplace;
+  }
+
+  if (!isEnabled) {
+    pGroup.dataset.enabled = false;
+  }
+
+  if (isRegex) {
+    const find = pGroup.querySelector(".find-input");
+    pGroup.dataset.regexMode = true;
+    find.placeholder = "/find/g";
   }
 
   replacementPairs.appendChild(pGroup);
@@ -236,8 +265,8 @@ function loadPreset() {
   if (pairsFromPreset.length < 1) return;
 
   replacementPairs.innerHTML = "";
-  pairsFromPreset.forEach(([find, replace]) => {
-    newReplaceGroup(find, replace);
+  pairsFromPreset.forEach(([find, replace, isEnabled, isRegex]) => {
+    newReplaceGroup(find, replace, isEnabled, isRegex);
   });
 }
 
@@ -402,10 +431,43 @@ function toggleToggles(elem) {
   }
 
   elem.dataset.toggled = !isToggled;
+
+  saveSession();
+}
+
+let saveTimeout;
+function saveSession() {
+  const pairs = getReplacePairs();
+  const input = sourceText.value;
+
+  const data = {
+    pairs: pairs,
+    input: input
+  };
+
+  clearTimeout(saveTimeout);
+  saveTimeout = setTimeout(() => {
+    localStorage.setItem(SESSION_SAVE_KEY, JSON.stringify(data));
+    console.log("Saved Session");
+  }, 500);
+}
+
+function loadSession() {
+  const data = JSON.parse(localStorage.getItem(SESSION_SAVE_KEY));
+
+  sourceText.value = data.input || "";
+
+  replacementPairs.innerHTML = "";
+  data.pairs.forEach(([find, replace, isEnabled, isRegex]) => {
+    newReplaceGroup(find, replace, isEnabled, isRegex);
+  });
 }
 
 newPairs.addEventListener("click", () => newReplaceGroup());
-runReplacements.addEventListener("click", applyReplacements);
+runReplacements.addEventListener("click", () => {
+  applyReplacements();
+  saveSession();
+});
 copyResultButton.addEventListener("click", copyResult);
 
 fillPresetSelection();
@@ -413,7 +475,19 @@ presetLoad.addEventListener("click", loadPreset);
 presetLoad.dispatchEvent(new Event("click"));
 presetAppend.addEventListener("click", appendPreset);
 
-replacementPairs.addEventListener("click", (e) => replacementPairClick(e));
+replacementPairs.addEventListener("click", (e) => {
+  replacementPairClick(e);
+});
+
+replacementPairs.addEventListener("input", () => saveSession());
 
 showReplacementSteps.addEventListener("click", () => showReplacements());
 replaceStepsDialogClose.addEventListener("click", () => replaceStepsDialog.close());
+
+sourceText.addEventListener("input", () => {
+  saveSession();
+});
+
+if (localStorage.getItem(SESSION_SAVE_KEY)) {
+  loadSession();
+}
