@@ -21,11 +21,6 @@ const replaceStepsDialog = document.getElementById("replace-steps-dialog");
 const replaceStepsContainer = document.getElementById("replacement-steps-container");
 const replaceStepsDialogClose = document.getElementById("replace-steps-dialog-close");
 
-const toggleToggle = document.getElementById("toggle-toggle");
-const toggleDelete = document.getElementById("toggle-delete");
-const toggleSwap = document.getElementById("toggle-swap");
-const toggleSort = document.getElementById("toggle-sort");
-
 let defaultPresets = {
   "none": [],
   "single-to-double-brackets": [
@@ -107,8 +102,8 @@ function newReplaceGroup(initialFind = "", initialReplace = "", isEnabled = true
   replacementPairs.appendChild(pGroup);
 }
 
-function replacementPairClick(elem) {
-  const button = elem.target.closest("button");
+function replacementPairClick(event) {
+  const button = event.target.closest("button");
   if (!button) return;
 
   const pGroup = button.closest(".replacement-pair");
@@ -312,6 +307,27 @@ function showReplacements() {
   // [ [pair, replacementHtml], ..]
   let steps = [];
 
+  // old logic "refactored" into a helper function
+  // as this gets reused for like 2 times.
+  function classic(find, replace) {
+    // if old logic, then do changes to the og text
+    originalText = originalText.replaceAll(find, replace);
+
+    // then do the html visualization of the replacement on the temp
+    // but first we need to split the text first, to clean it
+    let textFragment = tempText.split(find);
+    textFragment = textFragment.map(fragment => escapeHtml(fragment));
+
+    // count the occurrences, ig
+    // minus one since it still returns an array of 1 even if nothing matches
+    replacementCount = textFragment.length - 1;
+
+    // then we join it with the cleaned html thingies too
+    textForDisplay = textFragment.join(
+      `<del>${escapeHtml(find)}</del><ins>${escapeHtml(replace)}</ins>`
+    );
+  }
+
   pairs.forEach(([find, replace, isEnabled, isRegex]) => {
     if (!find || !replace || !isEnabled) return;
 
@@ -324,27 +340,6 @@ function showReplacements() {
 
     // checker for find if they're regex
     const isRegexMatch = find.match(/^\/(.+)\/([gimyus]*)$/);
-
-    // old logic "refactored" into a helper function
-    // as this gets reused for like 2 times.
-    function classic(find, replace) {
-      // if old logic, then do changes to the og text
-      originalText = originalText.replaceAll(find, replace);
-
-      // then do the html visualization of the replacement on the temp
-      // but first we need to split the text first, to clean it
-      let textFragment = tempText.split(find);
-      textFragment = textFragment.map(fragment => escapeHtml(fragment));
-
-      // count the occurrences, ig
-      // minus one since it still returns an array of 1 even if nothing matches
-      replacementCount = textFragment.length - 1;
-
-      // then we join it with the cleaned html thingies too
-      textForDisplay = textFragment.join(
-        `<del>${escapeHtml(find)}</del><ins>${escapeHtml(replace)}</ins>`
-      );
-    }
 
     if (isRegexMatch && isRegex) {
       // new logic for regex
@@ -474,6 +469,7 @@ presetAppend.addEventListener("click", appendPreset);
 
 replacementPairs.addEventListener("click", (e) => {
   replacementPairClick(e);
+  saveSession();
 });
 
 replacementPairs.addEventListener("input", () => saveSession());
