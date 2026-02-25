@@ -437,16 +437,13 @@ function toggleToggles(elem) {
 
 let saveTimeout;
 function saveSession() {
-  const pairs = getReplacePairs();
-  const input = sourceText.value;
-
-  const data = {
-    pairs: pairs,
-    input: input
-  };
-
   clearTimeout(saveTimeout);
   saveTimeout = setTimeout(() => {
+    const pairs = getReplacePairs();
+    const input = sourceText.value;
+
+    const data = { pairs, input };
+
     localStorage.setItem(SESSION_SAVE_KEY, JSON.stringify(data));
     console.log("Saved Session");
   }, 500);
