@@ -126,7 +126,7 @@ function replacementPairClick(event) {
   if (button.classList.contains("pair-direction-down")) {
     const nextSibling = pGroup.nextElementSibling;
     if (nextSibling) {
-      replacementPairs.insertBefore(pGroup, nextSibling.nextElementSibling); // the fuck
+      replacementPairs.insertBefore(pGroup, nextSibling.nextElementSibling); // move down: insert after next sibling
     }
     return;
   }
@@ -175,8 +175,8 @@ function getReplacePairs() {
     const isEnabled = pGroup.dataset.enabled === "true";
     const isRegex = pGroup.dataset.regexMode === "true";
 
-    const findString = findInput?.value || null;
-    const replaceString = replaceInput?.value || null;
+    const findString = findInput?.value || "";
+    const replaceString = replaceInput?.value || "";
 
     replacePairs.push([findString, replaceString, isEnabled, isRegex]);
   });
@@ -309,23 +309,35 @@ function showReplacements() {
 
   // old logic "refactored" into a helper function
   // as this gets reused for like 2 times.
-  function classic(find, replace) {
-    // if old logic, then do changes to the og text
+  function classic(find, replace, tempText) {
+    // Update cumulative text
     originalText = originalText.replaceAll(find, replace);
 
-    // then do the html visualization of the replacement on the temp
-    // but first we need to split the text first, to clean it
-    let textFragment = tempText.split(find);
-    textFragment = textFragment.map(fragment => escapeHtml(fragment));
+    // Count occurrences and produce visualization
+    const DEL_S = "!!___DELS___!!";
+    const DEL_E = "!!___DELE___!!";
+    const INS_S = "!!___INSS___!!";
+    const INS_E = "!!___INSE___!!";
 
-    // count the occurrences, ig
-    // minus one since it still returns an array of 1 even if nothing matches
-    replacementCount = textFragment.length - 1;
+    let count = 0;
+    const displayed = tempText.replaceAll(find, () => {
+      count++;
+      return `${DEL_S}${find}${DEL_E}${INS_S}${replace}${INS_E}`;
+    });
 
-    // then we join it with the cleaned html thingies too
-    textForDisplay = textFragment.join(
-      `<del>${escapeHtml(find)}</del><ins>${escapeHtml(replace)}</ins>`
-    );
+    // Escape HTML except our placeholders
+    let escapedDisplay = escapeHtml(displayed);
+    // Restore placeholders with HTML tags
+    escapedDisplay = escapedDisplay
+      .replaceAll(DEL_S, "<del>")
+      .replaceAll(DEL_E, "</del>")
+      .replaceAll(INS_S, "<ins>")
+      .replaceAll(INS_E, "</ins>");
+
+    return {
+      textForDisplay: escapedDisplay,
+      replacementCount: count
+    };
   }
 
   pairs.forEach(([find, replace, isEnabled, isRegex]) => {
@@ -366,7 +378,7 @@ function showReplacements() {
 
           // this will handle if the regex has grouping: /(things)/
           // and if the replace uses $n notation: $1 $2, etc
-          const singleRe = new RegExp(re, flags.replace("g", ""));
+          const singleRe = new RegExp(re.source, flags.replace("g", ""));
           const processedReplace = match.replace(singleRe, replace)
 
           // we will use these unusual html tags
@@ -392,7 +404,9 @@ function showReplacements() {
       }
     } else {
       // old logic here
-      classic(find, replace);
+      const result = classic(find, replace, tempText);
+      textForDisplay = result.textForDisplay;
+      replacementCount = result.replacementCount;
     }
 
     if (replacementCount > 0) {
@@ -445,14 +459,25 @@ function saveSession() {
 }
 
 function loadSession() {
-  const data = JSON.parse(localStorage.getItem(SESSION_SAVE_KEY));
+  try {
+    const item = localStorage.getItem(SESSION_SAVE_KEY);
+    if (!item) return;
+    const data = JSON.parse(item);
+    if (!data) return;
 
-  sourceText.value = data.input || "";
+    sourceText.value = data.input || "";
 
-  replacementPairs.innerHTML = "";
-  data.pairs.forEach(([find, replace, isEnabled, isRegex]) => {
-    newReplaceGroup(find, replace, isEnabled, isRegex);
-  });
+    replacementPairs.innerHTML = "";
+    if (Array.isArray(data.pairs)) {
+      data.pairs.forEach(([find, replace, isEnabled, isRegex]) => {
+        newReplaceGroup(find || "", replace || "", isEnabled, isRegex);
+      });
+    }
+  } catch (error) {
+    console.error("Failed to load session:", error);
+    // Clear corrupted session
+    localStorage.removeItem(SESSION_SAVE_KEY);
+  }
 }
 
 newPairs.addEventListener("click", () => newReplaceGroup());
